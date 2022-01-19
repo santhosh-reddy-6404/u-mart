@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  <meta charset="UTF-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  
+  <meta name="viewport" content="width=device-width, user-scalable=no"/>
+  
+  <link rel="manifest" href="manifest.json">
+  
+  <link rel="stylesheet"href="style.css"></link>
+  
+  <title>You Market - Admin</title>
+
+  <script src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+  
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+ 
+  <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+  
+  <script src='https://unpkg.com/react-router-dom@5.0.0/umd/react-router-dom.min.js'></script>
+  
+  <script src="https://www.gstatic.com/firebasejs/8.3.3/firebase-app.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/8.3.3/firebase-firestore.js"></script>
+  
+  <script src="/assets/fontawesome.js"></script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+
+  <script src="https://unpkg.com/moralis/dist/moralis.js"></script>
+  
+  <script src="/assets/script.js"></script>
+
+</head>
+
+<body>
+  
+<div id="loader"></div>
+  
+<div id="app"></div>
+
+<script type="text/babel">//Start...
+
+const Router = ReactRouterDOM.HashRouter;
+const Switch = ReactRouterDOM.Switch;
+const Link = ReactRouterDOM.Link;
+const Route = ReactRouterDOM.Route;
+  
+const { useState } = React
+const { useEffect } = React
+
+//App Component...
+
+const App = () => {
+
+window.onload = function () {
+	sessionStorage.clear();
+}
+
+const [log, setLog] = useState(false)
+const a = Moralis.User.current();
+
+useEffect(() => {
+if(a !== null) {
+setLog(true)
+}
+})
+
+const LogIn = () => { 
+  Moralis.authenticate({signingMessage:"hello!"}).then(function (user) {
+  alert(user.get('ethAddress'))
+  setLog(true)
+  })
+}
+
+const SignIn = () => {
+return(<div>
+<button onClick={LogIn} className="login">login</button>
+</div>)}
+
+//Main component...
+
+const Main = () => {
+
+return (<div>
+  
+<header>
+  <logo>You<span>Market</span></logo>
+</header>
+
+<div className="banner">
+  <h1>You Market</h1>
+  <div className="sets">
+  <div className="set">
+    <b>Total Products</b>
+    <p>97</p>
+  </div>
+  <div className="set">
+    <b>Inventory Worth</b>
+    <p>$ 13672</p>
+  </div>
+  <div className="set">
+    <b>Total Orders</b>
+    <p>74</p>
+  </div>
+  <div className="set">
+    <b>Unfilled orders</b>
+    <p>3</p>
+  </div>
+  </div>
+</div>
+
+</div>)}
+
+//Home...
+
+const Home = () => {
+
+const [det, setDet] = useState([{}])
+
+const [pic, setPic] = useState()
+
+db.doc('admin').get().then(async (m) => {var a = m.data();
+const url = a.ipfs
+const response = await fetch(url);
+return response.json().then((k) => {
+  setDet(k)
+  setPic(k[0].pic)
+})
+})
+
+function  uploadPic(e) {
+var a = e.target.files[0]
+const g = new Moralis.File('pic.webp', a)
+g.saveIPFS().then(() => {
+  setPic(g.ipfs())
+})
+}
+
+const Save = () => {
+
+det[0].name = 
+document.getElementById('name').value
+det[0].sname = 
+document.getElementById('sname').value
+det[0].pic = pic
+det[0].number = 
+document.getElementById('number').value
+det[0].email = 
+document.getElementById('email').value
+det[0].address = 
+document.getElementById('address').value
+
+const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(det))})
+b.saveIPFS().then(() => {
+  db.doc('admin').set({   ipfs : b.ipfs()
+  }).then(async() => {
+  alert('saved!')
+  })
+})
+}
+
+return(<div>
+
+<div className="menu">
+  <p className="active"><Link to="/">Home</Link></p>
+  <p><Link to="/products">Products</Link></p>
+  <p><Link to="/orders">Orders</Link></p>
+</div>
+
+<details>
+  <summary>
+    <b>Profile</b>
+    <div className="arrow">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
+				<polyline points="6 9 12 15 18 9"></polyline>
+			</svg>
+		</div>
+  </summary>
+  <div className="form">
+    <input type="text" id="name" placeholder="name" defaultValue ={det[0].name}></input>
+    <input type="text" id="sname" placeholder="shop name" defaultValue ={det[0].sname}></input>
+    <input onChange={uploadPic} className="file" type="file" name="pic"></input>
+    <img src={pic} width="70%"></img>
+    <input type="number" id="number" placeholder="phone number" defaultValue ={det[0].number}></input>
+    <input type="text" id="email" placeholder="email" defaultValue ={det[0].email}></input>
+    <input type="text" id="address" placeholder="address" defaultValue ={det[0].address}></input>
+    <button type="button" onClick={Save}>save</button>
+  </div>
+</details>
+
+</div>)}
+
+//Products...
+
+const Products = () => {
+
+const [products, setProducts] = useState([{}])
+
+db.doc('products').get().then(async (m) => {
+var a = m.data();
+const url = a.ipfs
+const response = await fetch(url);
+return response.json().then((k) => {
+  setProducts(k)
+})
+})
+
+function  uploadnewPic(e) {
+var a = e.target.files[0]
+const g = new Moralis.File('pic.webp', a)
+g.saveIPFS().then(() => {
+  sessionStorage.setItem('ppic', g.ipfs())
+})
+}
+
+function createPro() {
+
+products.push({
+  id : Date.now(),
+  name : 
+  document.getElementById('pname').value,
+  cost : 
+  document.getElementById('cost').value,
+  quantity : 
+  document.getElementById('quantity').value,
+  pic : 
+  sessionStorage.getItem('ppic'),
+  category : 
+  document.getElementById('category').value,
+  brand : 
+  document.getElementById('brand').value,
+  featured : 
+  document.getElementById('featured').value,
+  description: 
+  document.getElementById('description').value,
+  det1 : 
+  document.getElementById('det1').value,
+  det2 : 
+  document.getElementById('det2').value,
+  det3 : 
+  document.getElementById('det3').value,
+  keywords : 
+  document.getElementById('keywords').value
+})
+
+const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(products))})
+b.saveIPFS().then(() => {
+  db.doc('products').set({   ipfs : b.ipfs()
+  }).then(async() => {
+  alert('saved!')
+  })
+})
+}
+
+function  uploadoldPic(e) {
+
+let i = products.findIndex(m => m.id == e.target.id);
+
+if (confirm('Do you want to update product pic of '+products[i].name) === true) {
+  
+var a = e.target.files[0]
+const g = new Moralis.File('pic.webp', a)
+g.saveIPFS().then(() => {
+  products[i].pic = g.ipfs()
+}).then(() => {
+const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(products))})
+b.saveIPFS().then(() => {
+  db.doc('products').set({   ipfs : b.ipfs()
+  }).then(async() => {
+  document.getElementById(e.target.id+'pic').src= g.ipfs();
+  alert('pic updated!')
+  })
+})
+})
+} else { null } 
+
+}
+
+function updatePro(e) {
+
+let i = products.findIndex(m => m.id === e);
+
+products[i].name =
+document.getElementById(e+'pname').value
+products[i].cost =
+document.getElementById(e+'cost').value
+products[i].quantity =
+document.getElementById(e+'quantity').value
+products[i].category =
+document.getElementById(e+'category').value
+products[i].brand =
+document.getElementById(e+'brand').value
+products[i].featured =
+document.getElementById(e+'featured').value
+products[i].description =
+document.getElementById(e+'description').value
+products[i].det1 =
+document.getElementById(e+'det1').value
+products[i].det2 =
+document.getElementById(e+'det2').value
+products[i].det3 =
+document.getElementById(e+'det3').value
+products[i].keywords =
+document.getElementById(e+'keywords').value
+
+const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(products))})
+b.saveIPFS().then(() => {
+  db.doc('products').set({   ipfs : b.ipfs()
+  }).then(async() => {
+  alert('saved!')
+  })
+})
+}
+
+function delPro(e) {
+
+let i = products.findIndex(m => m.id === e);
+
+if (confirm('Do you want to delete product : '+products[i].name) == true) {
+  
+products.splice(i, i)
+const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(products))})
+b.saveIPFS().then(() => {
+  db.doc('products').set({   ipfs : b.ipfs()
+  }).then(async() => {
+  alert('deleted!')
+  })
+})
+  
+} else { null } 
+
+}
+
+return (<div>
+
+<div className="menu">
+  <p><Link to="/">Home</Link></p>
+  <p className="active"><Link to="/products">Products</Link></p>
+  <p><Link to="/orders">Orders</Link></p>
+</div>
+
+<details>
+  <summary>
+    <b>Add Product</b>
+    <div className="arrow">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
+				<polyline points="6 9 12 15 18 9"></polyline>
+			</svg>
+		</div>
+  </summary>
+  <div className="form">
+    <input type="text" id="pname" placeholder="product name"></input>
+    <input type="number" id="cost" placeholder="cost in ₹"></input>
+    <input type="number" id="quantity" placeholder="no.of pieces"></input>
+    <input className="file" type="file" id="ppic" onChange={uploadnewPic}></input>
+    <img src={sessionStorage.getItem('ppic')} width="40%"></img>
+    <input type="text" id="category" placeholder="category"></input>
+    <input type="text" id="brand" placeholder="brand"></input>
+    <input type="text" id="featured" placeholder="featured (true/false)"></input>
+    <textarea id="description" placeholder="description"  rows="5"></textarea>
+    <input type="text" id="det1" placeholder="1st detail"></input>
+    <input type="text" id="det2" placeholder="2nd detail"></input>
+    <input type="text" id="det3" placeholder="3rd detail"></input>
+    <input type="text" id="keywords" placeholder="keywords"></input>
+    <button type="button" onClick={createPro}>save</button>
+  </div>
+</details>
+
+{products.filter(e => e.id !== "").map(e => (
+<details>
+  <summary>
+    <b>{e.id===''?'Add Product':e.name}</b>
+    <div className="arrow">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
+				<polyline points="6 9 12 15 18 9"></polyline>
+			</svg>
+			<button type="button" onClick={m => delPro(e.id)}><i className="far fa-trash-alt"></i></button>
+		</div>
+  </summary>
+  <div className="form">
+    <input type="text" id={e.id+'pname'} placeholder="product name" defaultValue={e.name}></input>
+    <input type="number" id={e.id+'cost'} placeholder="cost in ₹" defaultValue={e.cost}></input>
+    <input type="number" id={e.id+'quantity'} placeholder="no.of pieces" defaultValue={e.quantity}></input>
+    <input className="file" type="file" id={e.id} onChange={uploadoldPic}></input>
+    <img id={e.id+'pic'} src={e.pic} width="40%"></img>
+    <input type="text" id={e.id+'category'} placeholder="category" defaultValue={e.category}></input>
+    <input type="text" id={e.id+'brand'} placeholder="brand" defaultValue={e.brand}></input>
+    <input type="text" id={e.id+'featured'} placeholder="featured (true/false)" defaultValue={e.featured}></input>
+    <textarea id={e.id+'description'} placeholder="description"  rows="5" defaultValue={e.description}></textarea>
+    <input type="text" id={e.id+'det1'} placeholder="1st detail" defaultValue={e.det1}></input>
+    <input type="text" id={e.id+'det2'} placeholder="2nd detail" defaultValue={e.det2}></input>
+    <input type="text" id={e.id+'det3'} placeholder="3rd detail" defaultValue={e.det3}></input>
+    <input type="text" id={e.id+'keywords'} placeholder="keywords" defaultValue={e.keywords}></input>
+    <button type="button" onClick={m => updatePro(e.id)}>save</button>
+  </div>
+</details>
+))}
+
+</div>)}
+
+//Orders...
+
+const Orders = () => {
+
+const [orders, setOrders] = useState([{}])
+
+useEffect(() => {
+db.doc('orders').get().then(async (m) => {
+var a = m.data();
+const url = a.ipfs
+const response = await fetch(url);
+return response.json().then((k) => {
+  setOrders(k)
+})
+})
+},[])
+
+function Ship(e) {
+
+let i = orders.findIndex(m => m.id === e);
+
+if(orders[i].status == "false") {
+
+if(confirm('Confirm that the order has been shipped ?')===true) {
+
+orders[i].status="shipped";
+
+const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(orders))})
+b.saveIPFS().then(() => {
+  db.doc('orders').set({   ipfs : b.ipfs()
+  }).then(async() => {
+db.doc('orders').get().then(async (m) => {
+var a = m.data();
+const url = a.ipfs
+const response = await fetch(url);
+return response.json().then((k) => {
+  setOrders(k)
+})
+})
+  alert('order status updated!')
+  })
+})
+
+} else {null}
+
+} else {null}
+
+}
+
+const Secret = (e) => {
+  alert(e)
+  return false;
+}
+
+return(<div>
+
+<div className="menu">
+  <p><Link to="/">Home</Link></p>
+  <p><Link to="/products">Products</Link></p>
+  <p className="active"><Link to="/orders">Orders</Link></p>
+</div>
+
+<div className="ORDERS">
+{orders.sort((a, b) => { return b.id - a.id; }).filter(e => typeof e.total!=="undefined").map(d => (
+<div className="order">
+  <div className="top">
+  <b>{d.id}</b>
+  <button type="button" onClick={(e) => Ship(d.id)}><i className={d.status =="true"?"far fa-check-circle":(d.status=="false"?"far fa-hourglass-half": (d.status=="shipped"?"far fa-truck-container":"far fa-times-circle"))}></i></button>
+  </div>
+  <p><span>Products Ordered : </span>{d.products.join(', ')}</p>
+  <p><span>Total Amount : </span>{'$'+d.total}</p>
+  <p><span>User Name : </span>{d.name}</p>
+  <p><span>Phone number : </span>{d.phone}</p>
+  <p><span>Delivery Address : </span>{d.address}</p>
+  <p><span>Payment Via : </span>{d.payment}</p>
+  <p><span>Status : </span>{d.status}</p>
+  <p><span onClick={(e) => Secret(d.secret)}>( reveal secret pin )</span></p>
+</div>))}
+</div>
+
+</div>)}
+
+//Routing...
+
+return(
+  
+<Router>
+
+{log? <Main/> : <SignIn/>}
+<div className="main"><Switch>
+<Route exact path="/">{log?<Home/>:null}</Route>
+<Route exact path="/products">{log?<Products/>:null}</Route>
+<Route exact path="/orders">{log?<Orders/>:null}</Route>
+</Switch></div>
+
+</Router>
+
+)}
+
+//End...
+
+ReactDOM.render(<App/>, document.getElementById('app'))
+
+</script>
+
+</body>
+
+</html>
