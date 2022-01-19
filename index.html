@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  <meta charset="UTF-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  
+  <meta name="viewport" content="width=device-width, user-scalable=no"/>
+  
+  <link rel="stylesheet" href="/assets/style.css"></link>
+  
+  <link rel="manifest" href="manifest.json">
+  
+  <script>
+    if('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js');
+    }
+  </script>
+  
+  <title>U Mart - Blockchain Ecommerce</title>
+
+  <script src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+  
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+ 
+  <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+  
+  <script src='https://unpkg.com/react-router-dom@5.0.0/umd/react-router-dom.min.js'></script>
+  
+  <script src="https://www.gstatic.com/firebasejs/8.3.3/firebase-app.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/8.3.3/firebase-firestore.js"></script>
+  
+  <script src="/assets/fontawesome.js"></script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/web3@1.6.1/dist/web3.min.js"></script>
+  
+  <script src="https://unpkg.com/moralis/dist/moralis.js"></script>
+  
+  <script src="/assets/script.js"></script>
+  
+</head>
+
+<body>
+  
+<div id="loader"></div>
+  
+<div id="app"></div>
+
+<script type="text/babel">// Start...
+
+const Router = ReactRouterDOM.HashRouter;
+const Switch = ReactRouterDOM.Switch;
+const Link = ReactRouterDOM.Link;
+const Route = ReactRouterDOM.Route;
+
+const { useState } = React
+const { useEffect } = React
+
+// App Component...
+
+const App = () => {
+
+// Reading all the data from ipfs
+
+const [products, setProducts] = useState([{}])
+const [det, setDet] = useState([{}])
+const [orders, setOrders] = useState([{}])
+const [reviews, setReviews] = useState([{}])
+const [wishlist, setWishlist] = useState([{}])
+
+useEffect(() => {
+db.doc('products').get().then(async (m) => {
+var a = m.data();
+const url = a.ipfs
+const response = await fetch(url);
+return response.json().then((k) => {
+  setProducts(k.filter(e => e.id !== ""))
+})
+})
+db.doc('admin').get().then(async (m) => {
+var a = m.data();
+const url = a.ipfs
+const response = await fetch(url);
+return response.json().then((k) => {
+  setDet(k)
+})
+})
+db.doc('orders').get().then(async (m) => {
+var a = m.data();
+const url = a.ipfs
+const response = await fetch(url);
+return response.json().then((k) => {
+  setOrders(k)
+})
+})
+db.doc('reviews').get().then(async (m) => {
+var a = m.data();
+const url = a.ipfs
+const response = await fetch(url);
+return response.json().then((k) => {
+  setReviews(k)
+})
+})
+db.doc('wishlist').get().then(async (m) => {
+var a = m.data();
+const url = a.ipfs
+const response = await fetch(url);
+return response.json().then((k) => {
+  setWishlist(k)
+})
+})
+}, [])
+
+//Authentication...
+
+const [log, setLog] = useState(false)
+
+if(Moralis.User.current()){
+var user = Moralis.User.current().get('ethAddress');
+useEffect(() => {
+if(user !== null) {
+setLog(true)
+}
+}, [log])
+} else {
+var user="null"
+}
+
+const LogIn = () => {
+  if(window.ethereum) {
+  Moralis.authenticate({signingMessage:"hello!"}).then(function (user) {
+  window.location.reload()
+  alert(user.get('ethAddress'))
+  setLog(true)
+  })
+  } else {alert("You don't have metamask installed on your browser! Unable to login...")}
+}
+
+//Header...
+
+const Header = () => {
+
+function profLog() {
+  if(user=="null" && confirm("You need to login. Click 'ok' to login...")===true) {
+  return LogIn();
+  } else {null}
+}
+
+return (<header>
+  <logo>You<span>Market</span></logo>
+  <div className="icons">
+    <Link to="/"><i id="hico" className="far fa-home-lg-alt" /></Link>
+    <Link to="/about"><i id="aico" className="far fa-store" /></Link>
+    <Link to={log?"/profile":"/"}><i onClick={profLog} id="pico" className="fas fa-user-circle"/></Link>
+  </div>
+</header>)}
+
+//Home...
+
+const Home = () => {
+  
+const Searcho = () => (
+<Route render={({ history}) => (
+  <form className="search" onSubmit={() => { history.push('/search') }}>
+      <i className="far fa-search" />
+      <input defaultValue="" placeholder="search You Market here..." type="search" onChange={e => sessionStorage.setItem('search', e.target.value)}/>
+    </form>
+  )}/>
+)
+  
+return (<div>
+
+<Searcho/>
+
+<div className="banner">
+<h1>Shop your favourites with joy at <span>You Market</span></h1> 
+<p> Buy your favourite fashions now at You Market at low cost and free delivery. </p> 
+<button> Shop Now <i className="far fa-bags-shopping fa-spin"></i> </button>
+</div>
+
+<div className="productsH">
+<div className="s-head">Featured Products</div>
+  <a><Link to="/shop">View All</Link></a>
+</div>
+
+<div className="PRODUCTS">
+{products.filter(product => 
+product.featured === "true" ).map(d => (
+  <div className="product">
+     <Link to={'/products/'+d.name}><img src={d.pic} width="20%"/></Link>
+     <p className="name">{d.name}</p>
+     <p className="cost"><span>{d.cutcost}</span>$ {d.cost}</p>
+  </div>
+))}
+</div>
+
+<div className="total">
+  <div className="tet">
+  <p>{products.filter(e => localStorage.getItem(e.id) !== null).length} items</p>
+  <a>$ {products.filter(e => localStorage.getItem(e.id) !== null).reduce((total, product) => total + parseInt((product.cost*localStorage.getItem(product.id)), 10), 0)}</a>
+  </div>
+ <span><Link to="/cart">Cart <i class="fal fa-shopping-basket"></i> </Link></span>
+</div>
+
+</div>)}
+
+//Profile...
+
+const Profile = () => {
+
+const [balance, setBal] = useState('0')
+web3.eth.getBalance(user).then(function (balance) { setBal((web3.utils.fromWei(balance, 'ether').toString()).substr(0,6)); })
+
+const wlist = wishlist.filter(e =>e.user===user)
+
+function conOrder(e) {
+let i = orders.findIndex(m => m.id === e);
+if(orders[i].status == "shipped") {
+if(confirm('Confirm that you received the order ?')===true) {
+window.ethereum.request({ method: 'eth_sendTransaction', params: [{
+  from: user,
+  to: addr,
+  data: contract.methods.confirm(web3.utils.toWei("0.1","ether")).encodeABI()
+}] })
+orders[i].status="true";
+const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(orders))})
+b.saveIPFS().then(() => {
+  db.doc('orders').set({   ipfs : b.ipfs()
+  }).then(async() => {
+db.doc('orders').get().then(async (m) => {
+var a = m.data();
+const url = a.ipfs
+const response = await fetch(url);
+return response.json().then((k) => {
+  setOrders(k)
+})
+})
+  alert('Confirmed! Your order pin is - '+orders[i].secret)
+  })
+})
+} else {null}
+} else {null}
+}
+
+function cancelOrder(e) {
+let i = orders.findIndex(m => m.id === e);
+if(orders[i].status == "false"||orders[i].status == "shipped") {
+if(confirm('Confirm that you want to cancel the order ?')===true) {
+window.ethereum.request({ method: 'eth_sendTransaction', params: [{
+  from: user,
+  to: addr,
+  data: contract.methods.cancel(web3.utils.toWei("0.1","ether")).encodeABI()
+}] })
+orders[i].status="cancelled";
+const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(orders))})
+b.saveIPFS().then(() => {
+  db.doc('orders').set({   ipfs : b.ipfs()
+  }).then(async() => {
+db.doc('orders').get().then(async (m) => {
+var a = m.data();
+const url = a.ipfs
+const response = await fetch(url);
+return response.json().then((k) => {
+  setOrders(k)
+})
+})
+  alert('Order Cancelled !')
+  })
+})
+} else {null}
+} else {null}
+}
+
+return(<div className="PROFILE">
+
+<div className="profile">
+<div className="user">
+  <img src="/images/profile.png" width="70px" height="75px"/>
+  <div className="det">
+    <p><span>Address : </span>{user.substr(0,6)+'....'+user.substr(-6)}</p>
+    <p><span>Balance : </span>{balance+' '}<i class="fab fa-ethereum"></i></p>
+  </div>
+</div>
+</div>
+
+<div className="wp">
+<h1>Wishlist</h1>
+<div id="WPRODUCTS" className="PRODUCTS">
+{products.filter(product => JSON.stringify(wlist).includes(product.id)).map(d => (
+  <div id="wproduct" className="product">
+     <Link to={'/products/'+d.name}><img src={d.pic} width="20%"/></Link>
+     <p className="name">{d.name}</p>
+     <p className="cost"><span>{d.cutcost}</span>$ {d.cost}</p>
+  </div>
+))}
+</div>
+</div>
+
+<details>
+  <summary>
+    <b>Order History</b>
+    <div className="arrow">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
+				<polyline points="6 9 12 15 18 9"></polyline>
+			</svg>
+		</div>
+  </summary>
+  <div className="ORDERS">
+  {orders.sort((a, b) => { return a.id - b.id; }).filter(e => e.ethAddress==user).reverse().map(d => (
+  <div className="order">
+    <div className="top">
+    <b onClick={(e) => cancelOrder(d.id)}>{d.id+' '}<p>{' '+(d.status=="true"? "( "+d.secret+" )" : (d.status=="cancelled"?" ":"( Cancel Order )"))}</p></b>
+    <button onClick={(e) => conOrder(d.id)} type="button"><i className={d.status =="true"?"far fa-check-circle":(d.status=="false"?"far fa-hourglass-half": (d.status=="shipped"?"far fa-truck-container":"far fa-times-circle"))}></i></button>
+    </div>
+    <p><span>Ordered on : </span>{new Date(d.id).getDate()+'/'+(new Date(d.id).getMonth()+1)+'/'+new Date(d.id).getFullYear()}</p>
+    <p><span>Products Ordered : </span>{d.products.join(', ')}</p>
+    <p><span>Total Amount : </span>{'$'+d.total}</p>
+    <p><span>Ordered by : </span>{d.name}</p>
+    <p><span>Phone number : </span>{d.phone}</p>
+    <p><span>Delivery Address : </span>{d.address}</p>
+    <p><span>Payment Via : </span>{d.payment}</p>
+    <p><span>Status : </span>{d.status}</p>
+  </div>))}
+  </div>
+</details>
+
+<div className="total">
+  <div className="tet">
+  <p>{products.filter(e => localStorage.getItem(e.id) !== null).length} items</p>
+  <a>$ {products.filter(e => localStorage.getItem(e.id) !== null).reduce((total, product) => total + parseInt((product.cost*localStorage.getItem(product.id)), 10), 0)}</a>
+  </div>
+ <span><Link to="/cart">Cart <i class="fal fa-shopping-basket"></i> </Link></span>
+</div>
+
+</div>)}
+
+//Search...
+
+const Search = () => {
+  
+var search = sessionStorage.getItem('search').toLowerCase()
+
+const filter = products.filter(e =>
+JSON.stringify(e).toLocaleLowerCase().includes(search)
+)
+
+var count = filter.length
+
+return (<div>
+
+<p className="line">Found <span>{count}</span> results for <span>' {search} '</span></p>
+  
+<div className="PRODUCTS">
+{filter.map(d => (
+  <div className="product">
+     <Link to={'/products/'+d.name}><img src={d.pic} width="20%"/></Link>
+     <p className="name">{d.name}</p>
+     <p className="cost"><span></span>$ {d.cost}</p>
+  </div>
+))}
+</div>8
+
+<div className="total">
+  <div className="tet">
+  <p>{products.filter(e => localStorage.getItem(e.id) !== null).length} items</p>
+  <a>$ {products.filter(e => localStorage.getItem(e.id) !== null).reduce((total, product) => total + parseInt((product.cost*localStorage.getItem(product.id)), 10), 0)}</a>
+  </div>
+ <span><Link to="/cart">Cart <i class="fal fa-shopping-basket"></i> </Link></span>
+</div>
+
+</div>)}
+
+//Cart...
+
+const Cart = () => {
+
+function profLog() {
+  if(user=="null" && confirm("You need to login. Click 'ok' to login...")===true) {
+  return LogIn();
+  } else {null}
+}
+
+return (<div className="cart">
+
+<div className="h-head">Cart</div>
+
+<div className="PRODUCTS">
+{products.filter(product => localStorage.getItem(product.id) !== null).map(d => (
+  <div className="product">
+       <Link to={'/products/'+d.name}><img src={d.pic} /></Link>
+       <p className="name">{d.name}</p>
+       <p className="cost">$ {d.cost}</p>
+       <p className="cost"><span>Quantity : </span> {localStorage.getItem(d.id)}</p>
+  </div>
+))}
+</div>
+
+<div className="total">
+  <div className="tet">
+  <p>Sub Total</p>
+  <a>$ {products.filter(e => localStorage.getItem(e.id) !== null).reduce((e, product) => e + parseInt((product.cost*localStorage.getItem(product.id)), 10), 0)}</a>
+  </div>
+ <span onClick={profLog}><Link to={log?"/checkout":"/cart"}>Checkout</Link></span>
+</div>
+
+</div>)}
+
+//Shop - category filter
+
+const Shop = () => {
+  
+const [category, setCategory] = useState('')
+
+return(<div>
+
+<div className="h-head">Shop</div>
+
+<div className="catH">
+<p>All Products</p>
+<select id="cat" onChange={e=>setCategory(e.target.value)}>
+  <option value="" >Filter</option>
+  <option>Level 1</option>
+  <option>Level 2</option>
+  <option>Level 3</option>
+  <option>Level 4</option>
+  <option>Level 5</option>
+</select>
+</div>
+
+<div className="PRODUCTS">
+{products.filter(product => product.category.includes(category)).map(d => (
+<div className="product">
+  <Link to={'/products/'+d.name}><img src={d.pic} /></Link>
+  <p className="name">{d.name}</p>
+  <p className="cost">$ {d.cost}</p>
+</div>
+))}
+</div>
+
+<div className="total">
+  <div className="tet">
+  <p>{products.filter(e => localStorage.getItem(e.id) !== null).length} items</p>
+  <a>$ {products.filter(e => localStorage.getItem(e.id) !== null).reduce((total, product) => total + parseInt((product.cost*localStorage.getItem(product.id)), 10), 0)}</a>
+  </div>
+ <span><Link to="/cart">Cart <i class="fal fa-shopping-basket"></i> </Link></span>
+</div>
+
+</div>)}
+
+//About page...
+
+const About = () => {
+  
+return (<div>
+  
+<div className="h-head">About us - You Market</div>
+
+<div className="about">
+  <img src={det[0].pic}/>
+  <p>Lorem Ipsum and <span className="span" >You Market</span> dolor sit amet, consectetur adipiscing elit. Sed faucibus tortor ac est scelerisque, id vulputate risus volutpat. Nunc porttitor felis elit, quis laoreet ipsum faucibus sed. Donec faucibus, neque et tincidunt molestie, ipsum lorem dignissim orci, at rutrum nibh neque nec ipsum. Mauris posuere vitae justo id consequat. <br/><br/>
+    <span> <i className="far fa-building"/> {' '+det[0].sname}</span><br/><br/>
+    <span> <i className="far fa-user"/>{' '+det[0].name}</span><br/><br/>
+    <span> <i className="far fa-map-marker-alt"/>{' '+det[0].address}</span><br/><br/>
+    <span> <i className="far fa-phone"/>{' +91 '+det[0].number}</span><br/><br/>
+    <span> <i className="far fa-envelope"/> {' '+det[0].email}</span>
+  </p>
+</div><br/>
+
+<div className="tofs">
+<div className="s-head">Terms of Service</div>
+  <span>• Lorem Inpsum dolar sit</span>
+  <p>Lorem Ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus tortor ac est scelerisque, id vulputate risus volutpat. Nunc porttitor felis elit, quis laoreet ipsum faucibus sed. Donec faucibus, neque et tincidunt molestie, ipsum lorem dignissim orci, at rutrum nibh neque nec ipsum. Mauris posuere vitae justo id consequat.</p>
+  <span>• Lorem Inpsum dolar sit</span>
+  <p>Lorem Ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus tortor ac est scelerisque, id vulputate risus volutpat. Nunc porttitor felis elit, quis laoreet ipsum faucibus sed. Donec faucibus, neque et tincidunt molestie, ipsum lorem dignissim orci, at rutrum nibh neque nec ipsum. Mauris posuere vitae justo id consequat.</p>
+  <span>• Lorem Inpsum dolar sit</span>
+  <p>Lorem Ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus tortor ac est scelerisque, id vulputate risus volutpat. Nunc porttitor felis elit, quis laoreet ipsum faucibus sed. Donec faucibus, neque et tincidunt molestie, ipsum lorem dignissim orci, at rutrum nibh neque nec ipsum. Mauris posuere vitae justo id consequat.</p>
+</div><br/>
+
+<div className="tofs">
+<div className="s-head">Privacy Policy</div>
+  <span>• Lorem Inpsum dolar sit</span>
+  <p>Lorem Ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus tortor ac est scelerisque, id vulputate risus volutpat. Nunc porttitor felis elit, quis laoreet ipsum faucibus sed. Donec faucibus, neque et tincidunt molestie, ipsum lorem dignissim orci, at rutrum nibh neque nec ipsum. Mauris posuere vitae justo id consequat.</p>
+  <span>• Lorem Inpsum dolar sit</span>
+  <p>Lorem Ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus tortor ac est scelerisque, id vulputate risus volutpat. Nunc porttitor felis elit, quis laoreet ipsum faucibus sed. Donec faucibus, neque et tincidunt molestie, ipsum lorem dignissim orci, at rutrum nibh neque nec ipsum. Mauris posuere vitae justo id consequat.</p>
+  <span>• Lorem Inpsum dolar sit</span>
+  <p>Lorem Ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus tortor ac est scelerisque, id vulputate risus volutpat. Nunc porttitor felis elit, quis laoreet ipsum faucibus sed. Donec faucibus, neque et tincidunt molestie, ipsum lorem dignissim orci, at rutrum nibh neque nec ipsum. Mauris posuere vitae justo id consequat.</p>
+</div>
+
+<div className="poweredBy"><i className="fas fa-bolt"></i> Powered By <span> Hindusthan Tech</span></div>
+
+</div>)}
+
+//Product page component...
+
+const Product = (props) => {
+
+var id = props.id
+var me = products.findIndex(e => e.id == id)
+
+const [qty, setQty] = useState('1')
+
+function Qty(e) {
+    localStorage.setItem(id,e.target.value)
+    setQty(e.target.value)
+}
+
+const [cart, setCart] = useState(localStorage.getItem(id) !== null ? false : true)
+
+
+function Cart() {
+  if(cart === false) {
+    localStorage.removeItem(id)
+    setCart(true)
+  } else {
+    localStorage.setItem(id, qty);
+    setCart(false)
+  }
+}
+
+function profLog() {
+  if(user=="null" && confirm("You need to login. Click 'ok' to login...")===true) {
+  return LogIn();
+  } else {null}
+}
+
+function Review() {
+
+if(document.getElementById('rname').value!==""&&document.getElementById('rreview').value!=="") {
+
+reviews.push({
+  name : document.getElementById('rname').value+' ('+user.substr(0,5)+'....'+user.substr(-5)+')',
+  review : document.getElementById('rreview').value,
+  product : id
+})
+
+const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(reviews))})
+b.saveIPFS().then(() => {
+  db.doc('reviews').set({   ipfs : b.ipfs()
+  })
+    db.doc('reviews').get().then(async (m) => {
+    var a = m.data();
+    const url = a.ipfs
+    const response = await fetch(url);
+    return response.json().then((k) => {
+    setReviews(k)
+    })
+    })
+  alert('review successfull!')
+})
+
+} else { alert('Please give your name and review !') }
+}
+
+const [wish, setWish] = useState(false)
+const [wash, setWash] = useState(false)
+const [wlist, setWlist] = useState(wishlist)
+
+useEffect(() => {
+  if(JSON.stringify(wishlist.filter(e => e.user == user)).includes(id)) {
+    setWish(true)
+    setWash(true)
+  } else {
+    setWish(false)
+    setWash(false)
+  }
+},[])
+
+function Wish() {
+
+setWash(!wash)
+
+if(wish === true) {
+
+var i = wishlist.findIndex(e => e.user==user&& e.product==id)
+
+wishlist.splice(i, i)
+
+const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(wishlist))})
+b.saveIPFS().then(() => {
+  db.doc('wishlist').set({   ipfs : b.ipfs()
+  })
+    db.doc('wishlist').get().then(async (m) => {
+    var a = m.data();
+    const url = a.ipfs
+    const response = await fetch(url);
+    return response.json().then((k) => {
+    setWlist(k)
+    })
+    })
+})
+
+} else {
+
+wishlist.push({
+  user : user,
+  product : id
+})
+
+const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(wishlist))})
+b.saveIPFS().then(() => {
+  db.doc('wishlist').set({   ipfs : b.ipfs()
+  })
+    db.doc('wishlist').get().then(async (m) => {
+    var a = m.data();
+    const url = a.ipfs
+    const response = await fetch(url);
+    return response.json().then((k) => {
+    setWlist(k)
+    })
+    })
+})
+}
+setWishlist(wlist)
+}
+
+return(<div className="page">
+
+<div className="back">
+  <i className="fas fa-arrow-left"/>
+</div>
+
+<div className="page1">
+
+<div className="images">
+  <img src={products[me].pic} width="100%"/>
+</div>
+
+<div className="text">
+
+<p className="name">{products[me].name}</p>
+<p className="cost">$ {products[me].cost}</p>
+
+<div className="btns">
+  <div onClick={Cart} className="cart">{cart? 'Add to Cart' : 'Remove'}</div>
+  <div onClick={profLog} className="buy"><a><Link to={log?"/checkout":null}>Buy now</Link></a></div>
+  <div onClick={log?Wish:profLog} className="wish"><i className={wash?"fas fa-heart":"far fa-heart"}></i></div>
+</div>
+
+{cart? null : <div className="qty">
+  <select defaultValue={localStorage.getItem(id)} onChange={Qty}>
+    <option>1</option>
+    <option>2</option>
+    <option>3</option>
+    <option>4</option>
+    <option>5</option>
+  </select>
+  <p>Select the quantity before buying or checking out...</p>
+</div>}
+
+<div className="details">
+  <p>{'• '+products[me].det1}</p>
+  <p>{'• '+products[me].det2}</p>
+  <p>{'• '+products[me].det3}</p>
+</div>
+
+</div>
+
+</div>
+
+<div className="page2">
+
+<div className="description">
+<h1>Description</h1>
+<span>{products[me].description}</span>
+</div>
+
+<div className="REVIEWS">
+<h1>Reviews</h1>
+{reviews.filter(e => e.product==id).map( d => (
+<div className="review">
+  <p>{d.review}</p>
+  <a>{' - '+d.name}</a>
+</div>))}
+<div className="input">
+  <textarea id="rreview" type="text" rows="3" cols="50" placeholder="write your review..." />
+  <div className="s">
+  <input id="rname" type="text" placeholder="your name"/>
+  <button onClick={log?Review:profLog}  type="button">Submit</button>
+  </div>
+</div>
+</div>
+
+</div>
+
+<div className="total">
+  <div className="tet">
+  <p>{products.filter(e => localStorage.getItem(e.id) !== null).length} items</p>
+  <a>$ {products.filter(e => localStorage.getItem(e.id) !== null).reduce((total, product) => total + parseInt((product.cost*localStorage.getItem(product.id)), 10), 0)}</a>
+  </div>
+ <span><Link to="/cart">Cart <i class="fal fa-shopping-basket"></i> </Link></span>
+</div>
+
+</div>)}
+
+//Checkout page...
+
+const Checkout = () => {
+
+const total = products.filter(product => localStorage.getItem(product.id) !== null).reduce((total, product) => total + parseInt((product.cost*localStorage.getItem(product.id)), 10), 0)
+
+function formSubmit() {
+
+if(localStorage.getItem('name')!==""&&localStorage.getItem('p.no')!==""&&localStorage.getItem('c.p.no')!==""&&localStorage.getItem('p.no').length==10&&localStorage.getItem('p.no')==localStorage.getItem('c.p.no')&&localStorage.getItem('h.no')!==""&&localStorage.getItem('h.no')!==""&&localStorage.getItem('area')!==""&&localStorage.getItem('lmark')!==""&&localStorage.getItem('city')!==""&&localStorage.getItem('pin.no')!==""&&localStorage.getItem('pin.no').length==6&&localStorage.getItem('state')!==""&& localStorage.getItem('country')!=="" && products.filter(e => localStorage.getItem(e.id)!==null).length!==0){
+  
+if(confirm('Confirm Order ?') === true) {
+  orders.push({
+  id : Date.now(),
+  name : localStorage.getItem('name')+' ('+user.substr(0,5)+'....'+user.substr(-5)+')' ,
+  ethAddress : user,
+  phone : localStorage.getItem('p.no'),
+  address : localStorage.getItem('h.no')+','+localStorage.getItem('area')+','+localStorage.getItem('lmark')+','+localStorage.getItem('city')+','+localStorage.getItem('state')+','+localStorage.getItem('country')+' - '
+    +localStorage.getItem('pin.no'),
+  products : products.filter(e => localStorage.getItem(e.id)!==null).map(d => d.name+'('+ localStorage.getItem(d.id)+')'+' - '+d.cost),
+  payment : 'ethereum',
+  total : total,
+  status : 'false',
+  secret: Date.now().toString().substr(-6)
+  })
+
+window.ethereum.request({ method: 'eth_sendTransaction', params: [{
+  from: user,
+  to: addr,
+  value: parseInt(web3.utils.toWei("0.1","ether")).toString(16),
+  data: contract.methods.pay().encodeABI()
+}] })
+
+const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(orders))})
+b.saveIPFS().then(() => {
+  db.doc('orders').set({   ipfs : b.ipfs()
+  }).then(async () => {
+
+  }).then(() => {
+  alert('order successfull!')
+  })
+})
+
+} else {null}
+  
+} else {
+  alert("PLEASE ENTER YOUR DETAILS CORRECTLY... [1. Fill all the fields correctly][2. Check that your cart isn't empty][3. Check your phone number correctly. Phone number with is very important][4. Enter the 6 digits postal code correctly][5. Please select the payment method]")
+}
+
+}
+
+const [val, setVal] = useState(0)
+function Del(e) {
+  localStorage.removeItem(e)
+  setVal(val+1)
+}
+
+return (<div>
+
+<div className="form">
+
+<div className="back">
+<Link to="/cart"><i className="fas fa-arrow-left"/></Link>
+</div>
+
+<h1 className="h-head">Checkout Here</h1>
+  
+<form>
+
+<div className="form1">
+
+  <label className="name">Full Name<br/>
+  <input type="text" placeholder="Santhosh Reddy" defaultValue={localStorage.getItem('name')} onChange={e => localStorage.setItem('name',e.target.value)} />
+  </label><br/>
+  
+  <label className="no">Contact Number<br/>
+  <input type="number" placeholder="+91 9640202298" defaultValue={localStorage.getItem('p.no')} onChange={e=> localStorage.setItem('p.no',e.target.value)} />
+  </label>
+  
+  <label className="no">Confirm Number<br/>
+  <input type="number" defaultValue ={localStorage.getItem('c.p.no')} onChange={e => localStorage.setItem('c.p.no', e.target.value)} />
+  </label>
+
+  <label className="add">Deliver Address<br/>
+  
+  <input type="text" placeholder="home / flat, building, apartment" defaultValue ={localStorage.getItem('h.no')} onChange={e => localStorage.setItem('h.no', e.target.value)}/>
+  
+  <input type="text" placeholder="Area, colony, village" defaultValue ={localStorage.getItem('area')} onChange={e => localStorage.setItem('area', e.target.value)}/> 
+  
+  <input type="text" placeholder="e.g. Near Apollo Hospital" defaultValue ={localStorage.getItem('lmark')} onChange={e => localStorage.setItem('lmark', e.target.value)}/>
+  
+  <input type="text" placeholder="Town / City" defaultValue ={localStorage.getItem('city')} onChange={e => localStorage.setItem('city', e.target.value)}/>
+  
+  <input type="number" placeholder="e.g. 508284" defaultValue ={localStorage.getItem('pin.no')} onChange={e => localStorage.setItem('pin.no', e.target.value)}/> 
+  
+  <input type="text" placeholder="e.g. Telangana" defaultValue ={localStorage.getItem('state')} onChange={e => localStorage.setItem('state', e.target.value)}/>
+  
+  <input type="text" placeholder="e.g. India" defaultValue ={localStorage.getItem('country')} onChange={e => localStorage.setItem('country', e.target.value)}/>
+  
+  </label>
+
+</div>
+<div className="form2">
+
+  <label>Order Summary
+  <div className="PRODUCTS-X">
+  {products.filter(product => localStorage.getItem(product.id) !== null).map(d => (
+  <div className="product-x">
+    <p>• {d.name}</p>
+    <a>{localStorage.getItem(d.id)} <span>×</span> ${d.cost}</a>
+    <button type="button"  onClick={(e) => Del(d.id) }>×</button>
+  </div>
+  ))}
+  <div className="total-check">
+  <p>Total : </p>
+  <a>$ {total}</a>
+  </div>
+  </div>
+  </label>
+  
+  <div className="pmet">
+    <img src="/images/eth.png" width="100%"/>
+  </div>
+  
+  <div onClick={formSubmit} className="button">Complete Order</div>
+  
+  </div>
+  
+</form>
+
+</div>
+
+</div>)}
+
+//Routing...
+
+return(<Router><Header/>
+
+<div className="main"><Switch>
+
+<Route exact path="/"><Home/></Route>
+
+<Route exact path="/search"><Search/></Route>
+
+<Route exact path="/cart"><Cart/></Route>
+
+<Route exact path="/shop"><Shop/></Route>
+''
+<Route exact path="/about"><About/></Route>
+
+<Route exact path="/profile"><Profile/></Route>
+
+<Route exact path="/checkout"><Checkout/></Route>
+
+{products.filter(product =>
+product.id !== null ).map(d => (
+  <Route exact path={'/products/'+d.name}>
+  <Product id={d.id} />
+  </Route>
+))}
+
+</Switch></div>
+
+</Router>)}
+
+//End
+
+ReactDOM.render(<App/>, document.getElementById('app'))
+
+</script>
+
+</body>
+
+</html>
