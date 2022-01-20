@@ -21,7 +21,7 @@ The app is styled with basic css and the app is completely responsive.
 
 This project uses Moralis.io for user authentication, ipfs gateway and ethereum rpc node. All the hashes of data stored in ipfs are stored in firebase firestore.
 
-Most of the app data like products, orders, admin data, user wishlist, reviews are stored in ipfs and the data is pinned automatically. The cart data as well as order inputs data of user is stored in localStorage.
+Most of the app data like products, orders, admin data, user wishlist, reviews are stored in ipfs and the data is pinned automatically and the core function of supply chain management is done through smart contracts. Hence, this is a decentralized app (Dapp). The cart data as well as order inputs data of user is stored in localStorage.
 
 All the components of the app are kept in index. html files itself under script tags (type="module")
 
@@ -45,6 +45,8 @@ The main components of the admin panel are:<br/>
 2. Admin data to update his store data which is to be shown to users in about page.<br/>
 3. Inventory management (CRUD operations on products data)<br/>
 4. Orders data and management.<br/>
+
+The admin has access only to the order data of users and nothing else.
 
 **3. Supply Chain management, payment and shipping - smart contract**
 
