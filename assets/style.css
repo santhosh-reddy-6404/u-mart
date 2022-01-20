@@ -155,7 +155,7 @@ header #pico:hover{
   border: 3px solid #291472;
   box-shadow: inset 0 0 15px #000000AB;
   background: #49218E;
-  height: 160px;
+  min-height: 130px;
   width: 100%;
   border-radius: 12px;
   margin-bottom: -10px;
@@ -193,7 +193,7 @@ header #pico:hover{
   }
 
   .product img {
-    height: 240px;
+    min-height: 240px;
   }
 
   .product .name {
