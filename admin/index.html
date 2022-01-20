@@ -56,18 +56,59 @@ const { useEffect } = React
 
 const App = () => {
 
+//Importing data...
+
+const [det, setDet] = useState([{}])
+const [products, setProducts] = useState([{}])
+const [orders, setOrders] = useState([{}])
+const [pic, setPic] = useState()
+
+useEffect(() => {
+db.doc('admin').get().then(async (m) => {var a = m.data();
+const url = a.ipfs
+const response = await fetch(url);
+return response.json().then((k) => {
+  setDet(k)
+  setPic(k[0].pic)
+})
+})
+db.doc('products').get().then(async (m) => {
+var a = m.data();
+const url = a.ipfs
+const response = await fetch(url);
+return response.json().then((k) => {
+  setProducts(k)
+})
+})
+db.doc('orders').get().then(async (m) => {
+var a = m.data();
+const url = a.ipfs
+const response = await fetch(url);
+return response.json().then((k) => {
+  setOrders(k)
+})
+})
+},[])
+
+
 window.onload = function () {
 	sessionStorage.clear();
 }
 
+//Authentication
+
 const [log, setLog] = useState(false)
-const a = Moralis.User.current();
+const admin = Moralis.User.current();
 
 useEffect(() => {
-if(a !== null) {
+if(admin !== null) {
 setLog(true)
+} else {
+setLog(false)
 }
 })
+
+const [error, setError] = useState('')
 
 const LogIn = () => { 
   Moralis.authenticate({signingMessage:"hello!"}).then(function (user) {
@@ -78,7 +119,7 @@ const LogIn = () => {
 
 const SignIn = () => {
 return(<div>
-<button onClick={LogIn} className="login">login</button>
+<button onClick={LogIn} className="login">login</button><br/><p>{error}</p>
 </div>)}
 
 //Main component...
@@ -88,7 +129,7 @@ const Main = () => {
 return (<div>
   
 <header>
-  <logo>You<span>Market</span></logo>
+  <logo>U<span>Mart</span></logo>
 </header>
 
 <div className="banner">
@@ -96,19 +137,19 @@ return (<div>
   <div className="sets">
   <div className="set">
     <b>Total Products</b>
-    <p>97</p>
+    <p>{products.filter(e => e.id!=="").length}</p>
   </div>
   <div className="set">
     <b>Inventory Worth</b>
-    <p>$ 13672</p>
+    <p>$ {products.filter(e => e.id!=="").reduce((total, product) => total + parseInt((product.cost*product.quantity), 10), 0)}</p>
   </div>
   <div className="set">
-    <b>Total Orders</b>
-    <p>74</p>
+    <b>Total Revenue</b>
+    <p>$ {orders.filter(e => typeof e.total!=="undefined").reduce((total, product) => total + parseInt((order.total*1), 10), 0)}</p>
   </div>
   <div className="set">
-    <b>Unfilled orders</b>
-    <p>3</p>
+    <b>Unfulfilled Orders</b>
+    <p>{orders.filter(e => typeof e.total!=="undefined").length}</p>
   </div>
   </div>
 </div>
@@ -118,19 +159,6 @@ return (<div>
 //Home...
 
 const Home = () => {
-
-const [det, setDet] = useState([{}])
-
-const [pic, setPic] = useState()
-
-db.doc('admin').get().then(async (m) => {var a = m.data();
-const url = a.ipfs
-const response = await fetch(url);
-return response.json().then((k) => {
-  setDet(k)
-  setPic(k[0].pic)
-})
-})
 
 function  uploadPic(e) {
 var a = e.target.files[0]
@@ -197,17 +225,6 @@ return(<div>
 //Products...
 
 const Products = () => {
-
-const [products, setProducts] = useState([{}])
-
-db.doc('products').get().then(async (m) => {
-var a = m.data();
-const url = a.ipfs
-const response = await fetch(url);
-return response.json().then((k) => {
-  setProducts(k)
-})
-})
 
 function  uploadnewPic(e) {
 var a = e.target.files[0]
@@ -405,19 +422,6 @@ return (<div>
 //Orders...
 
 const Orders = () => {
-
-const [orders, setOrders] = useState([{}])
-
-useEffect(() => {
-db.doc('orders').get().then(async (m) => {
-var a = m.data();
-const url = a.ipfs
-const response = await fetch(url);
-return response.json().then((k) => {
-  setOrders(k)
-})
-})
-},[])
 
 function Ship(e) {
 
