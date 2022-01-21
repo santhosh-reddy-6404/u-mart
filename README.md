@@ -19,9 +19,11 @@ The Front-end of the app is built with React.JS library, a smart contract with s
 
 The app is styled with basic css and the app is completely responsive.
 
+Most of the app data like products, orders, admin data, user wishlist, reviews are stored in IPFS and the data is pinned automatically and the core function of supply chain management is done through smart contracts. Hence, this is a decentralized app (Dapp). The cart data as well as order inputs data of user is stored in localStorage.
+
 This project uses Moralis.io for user authentication, ipfs gateway and ethereum rpc node. All the hashes of data stored in ipfs are stored in firebase firestore.
 
-Most of the app data like products, orders, admin data, user wishlist, reviews are stored in ipfs and the data is pinned automatically and the core function of supply chain management is done through smart contracts. Hence, this is a decentralized app (Dapp). The cart data as well as order inputs data of user is stored in localStorage.
+However, storing the hashes of the data stored in IPFS in the blockchain through smart contracts is the best and secure way in terms of privacy and even though I'm capable of implementing that, I didn't in the project. This is because I made this project to showcase my skills which also includes hadling a noSQL database like Firebase.
 
 All the components of the app are kept in index. html files itself under script tags (type="module")
 
