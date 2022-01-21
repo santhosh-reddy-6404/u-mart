@@ -23,7 +23,7 @@ Most of the app data like products, orders, admin data, user wishlist, reviews a
 
 This project uses Moralis.io for user authentication, ipfs gateway and ethereum rpc node. All the hashes of data stored in ipfs are stored in firebase firestore.
 
-However, storing the hashes of the data stored in IPFS in the blockchain through smart contracts is the best and secure way in terms of privacy. Even though I'm capable of implementing that (as i also created a smart contract for payments on ethereum blockchain), I didn't do that in this project. This is because I made this project to showcase my skills which also includes hadling a noSQL database like Firebase.
+However, storing the hashes of the data stored in IPFS in the blockchain through smart contracts is the best and secure way in terms of privacy and complete decentralization. Even though I'm capable of implementing that (as i also created a smart contract for payments on ethereum blockchain), I didn't do that in this project. This is because I made this project to showcase my skills which also includes hadling a noSQL database like Firebase.
 
 All the components of the app are kept in index. html files itself under script tags (type="module")
 
