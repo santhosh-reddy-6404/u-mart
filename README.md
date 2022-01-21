@@ -3,7 +3,7 @@ preview: https://u-mart.netlify.app/
 
 **Hey guys!**
 This is Santhosh Reddy a 17 year old web dev and a blockchain dev.
-I made a real-time Ecommerce web app as my project made with combining my web and blockchain development skills.
+I made a real-time Ecommerce web app as my project made with combining my web and blockchain development skills. This project has taken around 52days to complete as an individual.
 
 Follow me on twitter : https://twitter.com/k_santosh2005
 
