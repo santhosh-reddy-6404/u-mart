@@ -253,6 +253,10 @@ header #pico:hover{
   padding: 20px;
 }
 
+.banner a {
+  text-decoration: none;
+}
+
 .banner h1 {
   font-size: 20px;
   color: white;
