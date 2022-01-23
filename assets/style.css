@@ -289,6 +289,10 @@ header #pico:hover{
   transition: all 0.5s ease;
 }
 
+.button a:hover {
+  color: white;
+}
+
 .banner button:hover {
   border: 3px solid #84CF23;
   background: #DEF0ED00;
