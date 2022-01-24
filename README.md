@@ -13,7 +13,7 @@ If you like my work please don't forget to give a ⭐ . It's free of cost...
 
 This project is a real-time single vendor ecommerce web app and also tagged as PWA as well as Dapp as it is built on ethereum blockchain network (ropsten - testnet).<br/>
 
-All the packages required for the project are installed through CDNs in the index. html files and never used CLI or npm to build this project.
+All the packages required for the project are installed through CDNs in the index. html files and never used CLI or npm to build this project. The other thing is, this project was completely built on mobile in an android app named Spck Editor.
 
 The Front-end of the app is built with React.JS library, a smart contract with solidity and deployed with remix ide and Web3.JS to interact with the smart contract.
 
