@@ -15,7 +15,7 @@ This project is a real-time single vendor ecommerce web app and also tagged as P
 
 All the packages required for the project are installed through CDNs in the index. html files and never used CLI or npm to build this project. The other thing is, this project was completely built on mobile in an android app named Spck Editor.
 
-The Front-end of the app is built with React.JS library, a smart contract with solidity and deployed with remix ide and Web3.JS to interact with the smart contract.
+The Front-end of the app is built with React.JS library and all the react.js code was kept in the index.html file under script tags(type="module"), a smart contract with solidity and deployed with remix ide and Web3.JS to interact with the smart contract.
 
 The app is styled with basic css and the app is completely responsive.
 
