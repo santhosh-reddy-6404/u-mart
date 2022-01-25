@@ -211,7 +211,7 @@ return(<div>
   <div className="form">
     <input type="text" id="name" placeholder="name" defaultValue ={det[0].name}></input>
     <input type="text" id="sname" placeholder="shop name" defaultValue ={det[0].sname}></input>
-    <input onChange={uploadPic} className="file" type="file" name="pic"></input>
+    <input onChange={uploadPic} className="file" type="file" accept="image/*" name="pic"></input>
     <img src={pic} width="70%"></img>
     <input type="number" id="number" placeholder="phone number" defaultValue ={det[0].number}></input>
     <input type="text" id="email" placeholder="email" defaultValue ={det[0].email}></input>
@@ -373,7 +373,7 @@ return (<div>
     <input type="text" id="pname" placeholder="product name"></input>
     <input type="number" id="cost" placeholder="cost in ₹"></input>
     <input type="number" id="quantity" placeholder="no.of pieces"></input>
-    <input className="file" type="file" id="ppic" onChange={uploadnewPic}></input>
+    <input className="file" type="file" accept="image/*" id="ppic" onChange={uploadnewPic}></input>
     <img src={sessionStorage.getItem('ppic')} width="40%"></img>
     <input type="text" id="category" placeholder="category"></input>
     <input type="text" id="brand" placeholder="brand"></input>
@@ -402,7 +402,7 @@ return (<div>
     <input type="text" id={e.id+'pname'} placeholder="product name" defaultValue={e.name}></input>
     <input type="number" id={e.id+'cost'} placeholder="cost in ₹" defaultValue={e.cost}></input>
     <input type="number" id={e.id+'quantity'} placeholder="no.of pieces" defaultValue={e.quantity}></input>
-    <input className="file" type="file" id={e.id} onChange={uploadoldPic}></input>
+    <input className="file" type="file" accept="image/*" id={e.id} onChange={uploadoldPic}></input>
     <img id={e.id+'pic'} src={e.pic} width="40%"></img>
     <input type="text" id={e.id+'category'} placeholder="category" defaultValue={e.category}></input>
     <input type="text" id={e.id+'brand'} placeholder="brand" defaultValue={e.brand}></input>
