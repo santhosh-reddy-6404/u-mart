@@ -25,7 +25,7 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    -name: run a one-line script
+    - name: run a one-line script
      run: env
     # Runs a single command using the runners shell
     - name: Send greeting
