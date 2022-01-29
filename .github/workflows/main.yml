@@ -1,32 +1,28 @@
-# This is a basic workflow that is manually triggered
+name: env
 
-name: Manual workflow
+## Triggers the workflow on when there is a push, or 
+## pull request on the main branch 
 
-# Controls when the action will run. Workflow runs when manually triggered using the UI
-# or API.
-on:
-  workflow_dispatch:
-    # Inputs the workflow accepts.
-    inputs:
-      name:
-        # Friendly description to be shown in the UI instead of 'name'
-        description: 'Person to greet'
-        # Default value if no value is explicitly provided
-        default: 'World'
-        # Input has to be provided for the workflow to run
-        required: true
+on: [pull_request, push] 
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
-jobs:
-  # This workflow contains a single job called "greet"
-  greet:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+env: 
+## Sets environment variable 
+API_KEY: XXXXXXXXXXXX
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-    - name: run a one-line script
-     run: env
-    # Runs a single command using the runners shell
-    - name: Send greeting
-      run: echo "Hello ${{ github.event.inputs.name }}"
+jobs: 
+
+  job1: 
+  ## The type of runner that the job will run on, 
+  ## here it runs on ubuntu latest 
+  runs-on: ubuntu-latest 
+  steps: 
+    - name: step 1 
+    ## Reference your environment variables 
+    run: echo "The API key is:${{env.API_KEY}}" 
+
+   job2: 
+   runs-on: ubuntu-latest 
+   steps: 
+     - name: step 1 
+     ## Another way reference your environment variables 
+     run: echo "The API key is:$API_KEY"
