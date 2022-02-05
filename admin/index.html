@@ -161,6 +161,7 @@ return (<div>
 const Home = () => {
 
 function  uploadPic(e) {
+alert('please wait until you see an updated image here...');
 var a = e.target.files[0]
 const g = new Moralis.File('pic.webp', a)
 g.saveIPFS().then(() => {
@@ -169,7 +170,7 @@ g.saveIPFS().then(() => {
 }
 
 const Save = () => {
-
+alert('please wait until you get a success message...');
 det[0].name = 
 document.getElementById('name').value
 det[0].sname = 
@@ -227,6 +228,7 @@ return(<div>
 const Products = () => {
 
 function  uploadnewPic(e) {
+alert('please wait until you see the uploaded image here...');
 var a = e.target.files[0]
 const g = new Moralis.File('pic.webp', a)
 g.saveIPFS().then(() => {
@@ -263,7 +265,7 @@ products.push({
   keywords : 
   document.getElementById('keywords').value
 })
-
+alert('please wait until you get a success message...');
 const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(products))})
 b.saveIPFS().then(() => {
   db.doc('products').set({   ipfs : b.ipfs()
@@ -278,7 +280,7 @@ function  uploadoldPic(e) {
 let i = products.findIndex(m => m.id == e.target.id);
 
 if (confirm('Do you want to update product pic of '+products[i].name) === true) {
-  
+alert('please wait until you get a success message...');
 var a = e.target.files[0]
 const g = new Moralis.File('pic.webp', a)
 g.saveIPFS().then(() => {
@@ -300,7 +302,7 @@ b.saveIPFS().then(() => {
 function updatePro(e) {
 
 let i = products.findIndex(m => m.id === e);
-
+alert('please wait until you get a success message...');
 products[i].name =
 document.getElementById(e+'pname').value
 products[i].cost =
@@ -338,7 +340,7 @@ function delPro(e) {
 let i = products.findIndex(m => m.id === e);
 
 if (confirm('Do you want to delete product : '+products[i].name) == true) {
-  
+alert('please wait until you get a success message...');
 products.splice(i, i)
 const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(products))})
 b.saveIPFS().then(() => {
@@ -432,7 +434,7 @@ if(orders[i].status == "false") {
 if(confirm('Confirm that the order has been shipped ?')===true) {
 
 orders[i].status="shipped";
-
+alert('please wait until you get a success message...');
 const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(orders))})
 b.saveIPFS().then(() => {
   db.doc('orders').set({   ipfs : b.ipfs()
