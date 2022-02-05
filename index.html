@@ -217,7 +217,7 @@ web3.eth.getBalance(user).then(function (balance) { setBal((web3.utils.fromWei(b
 
 const wlist = wishlist.filter(e =>e.user===user)
 
-function conOrder(e) {
+function confirmOrder(e) {
 let i = orders.findIndex(m => m.id === e);
 if(orders[i].status == "shipped") {
 if(confirm('Confirm that you received the order ?')===true) {
@@ -226,6 +226,7 @@ window.ethereum.request({ method: 'eth_sendTransaction', params: [{
   to: addr,
   data: contract.methods.confirm(web3.utils.toWei("0.1","ether")).encodeABI()
 }] }).then(() => {
+alert('please wait until you get a success message...');
 orders[i].status="true";
 const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(orders))})
 b.saveIPFS().then(() => {
@@ -256,6 +257,7 @@ window.ethereum.request({ method: 'eth_sendTransaction', params: [{
   to: addr,
   data: contract.methods.cancel(web3.utils.toWei("0.1","ether")).encodeABI()
 }] }).then(() => {
+alert('please wait until you get a success message...');
 orders[i].status="cancelled";
 const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(orders))})
 b.saveIPFS().then(() => {
@@ -316,7 +318,7 @@ return(<div className="PROFILE">
   <div className="order">
     <div className="top">
     <b onClick={(e) => cancelOrder(d.id)}>{d.id+' '}<p>{' '+(d.status=="true"? "( "+d.secret+" )" : (d.status=="cancelled"?" ":"( Cancel Order )"))}</p></b>
-    <button onClick={(e) => conOrder(d.id)} type="button"><i className={d.status =="true"?"far fa-check-circle":(d.status=="false"?"far fa-hourglass-half": (d.status=="shipped"?"far fa-truck-container":"far fa-times-circle"))}></i></button>
+    <button onClick={(e) => confirmOrder(d.id)} type="button"><i className={d.status =="true"?"far fa-check-circle":(d.status=="false"?"far fa-hourglass-half": (d.status=="shipped"?"far fa-truck-container":"far fa-times-circle"))}></i></button>
     </div>
     <p><span>Ordered on : </span>{new Date(d.id).getDate()+'/'+(new Date(d.id).getMonth()+1)+'/'+new Date(d.id).getFullYear()}</p>
     <p><span>Products Ordered : </span>{d.products.join(', ')}</p>
@@ -533,6 +535,8 @@ function Review() {
 
 if(document.getElementById('rname').value!==""&&document.getElementById('rreview').value!=="") {
 
+alert('Please wait until you get a success message...');
+
 reviews.push({
   name : document.getElementById('rname').value+' ('+user.substr(0,5)+'....'+user.substr(-5)+')',
   review : document.getElementById('rreview').value,
@@ -709,13 +713,14 @@ function formSubmit() {
 if(localStorage.getItem('name')!==""&&localStorage.getItem('p.no')!==""&&localStorage.getItem('c.p.no')!==""&&localStorage.getItem('p.no').length==10&&localStorage.getItem('p.no')==localStorage.getItem('c.p.no')&&localStorage.getItem('h.no')!==""&&localStorage.getItem('h.no')!==""&&localStorage.getItem('area')!==""&&localStorage.getItem('lmark')!==""&&localStorage.getItem('city')!==""&&localStorage.getItem('pin.no')!==""&&localStorage.getItem('pin.no').length==6&&localStorage.getItem('state')!==""&& localStorage.getItem('country')!=="" && products.filter(e => localStorage.getItem(e.id)!==null).length!==0){
   
 if(confirm('Confirm Order ?') === true) {
-  
+
 window.ethereum.request({ method: 'eth_sendTransaction', params: [{
   from: user,
   to: addr,
   value: parseInt(web3.utils.toWei("0.1","ether")).toString(16),
   data: contract.methods.pay().encodeABI()
 }] }).then(() => {
+  alert('please wait until you get a success message...');
   orders.push({
   id : Date.now(),
   name : localStorage.getItem('name')+' ('+user.substr(0,5)+'....'+user.substr(-5)+')' ,
