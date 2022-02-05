@@ -63,6 +63,8 @@ const [products, setProducts] = useState([{}])
 const [orders, setOrders] = useState([{}])
 const [pic, setPic] = useState()
 
+const [none, setNone] = useState(Date.now())
+
 useEffect(() => {
 db.doc('admin').get().then(async (m) => {var a = m.data();
 const url = a.ipfs
@@ -188,11 +190,14 @@ b.saveIPFS().then(() => {
   db.doc('admin').set({   ipfs : b.ipfs()
   }).then(async() => {
   alert('saved!')
+  setNone(Date.now())
   })
 })
 }
 
 return(<div>
+
+<p style={{display:"none",fontSize:"0"}}>{none}</p>
 
 <div className="menu">
   <p className="active"><Link to="/">Home</Link></p>
@@ -272,6 +277,7 @@ const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(products))})
 b.saveIPFS().then(() => {
   db.doc('products').set({   ipfs : b.ipfs()
   }).then(async() => {
+  setNone(Date.now())
   alert('saved!')
   })
 })
@@ -293,7 +299,8 @@ b.saveIPFS().then(() => {
   db.doc('products').set({   ipfs : b.ipfs()
   }).then(async() => {
   document.getElementById(e.target.id+'pic').src= g.ipfs();
-  alert('pic updated!')
+  setNone(Date.now())
+alert('pic updated!')
   })
 })
 })
@@ -332,6 +339,7 @@ const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(products))})
 b.saveIPFS().then(() => {
   db.doc('products').set({   ipfs : b.ipfs()
   }).then(async() => {
+  setNone(Date.now())
   alert('saved!')
   })
 })
@@ -348,6 +356,7 @@ const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(products))})
 b.saveIPFS().then(() => {
   db.doc('products').set({   ipfs : b.ipfs()
   }).then(async() => {
+  setNone(Date.now())
   alert('deleted!')
   })
 })
@@ -357,6 +366,8 @@ b.saveIPFS().then(() => {
 }
 
 return (<div>
+
+<p style={{display:"none",fontSize:"0"}}>{none}</p>
 
 <div className="menu">
   <p><Link to="/">Home</Link></p>
@@ -449,6 +460,7 @@ return response.json().then((k) => {
   setOrders(k)
 })
 })
+  setNone(Date.now())
   alert('order status updated!')
   })
 })
@@ -465,6 +477,8 @@ const Secret = (e) => {
 }
 
 return(<div>
+
+<p style={{display:"none",fontSize:"0"}}>{none}</p>
 
 <div className="menu">
   <p><Link to="/">Home</Link></p>
