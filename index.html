@@ -546,7 +546,7 @@ reviews.push({
 const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(reviews))})
 b.saveIPFS().then(() => {
   db.doc('reviews').set({   ipfs : b.ipfs()
-  })
+  }).then(() => {
     db.doc('reviews').get().then(async (m) => {
     var a = m.data();
     const url = a.ipfs
@@ -556,6 +556,7 @@ b.saveIPFS().then(() => {
     })
     })
   alert('review successfull!')
+  })
 })
 
 } else { alert('Please give your name and review !') }
