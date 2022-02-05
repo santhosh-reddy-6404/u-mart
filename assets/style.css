@@ -1150,6 +1150,7 @@ form label {
 }
 
 .pmet {
+  margin-top: 5px;
   margin-left: 18px;
   width: 85%;
 }
@@ -1199,6 +1200,11 @@ form {
 .PRODUCTS-X {
   width: 90%;
   margin: 0 auto;
+}
+
+.pmet {
+  margin-top: 18px;
+  margin-left: 0;
 }
 
 }
