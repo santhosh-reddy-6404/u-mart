@@ -1005,11 +1005,6 @@ details summary b {
   width: 50%;
 }
 
-.images img {
-  width: 49vw;
-  height: 49vw;
-}
-
 .text {
   width: calc(40% - 35px);
 }
@@ -1213,10 +1208,6 @@ form .button {
 
 #orderSum {
 margin-left: -15px;
-}
-
-.page1 .images {
-  width: 50%;
 }
 
 }
