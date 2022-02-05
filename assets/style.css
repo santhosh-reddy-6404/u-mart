@@ -1204,7 +1204,15 @@ form {
 
 .pmet {
   margin-top: 18px;
-  margin-left: 0;
+  margin-left: 3px;
+}
+
+form .button {
+  margin-left: 3px;
+}
+
+#orderSum {
+margin-left: -15px;
 }
 
 }
