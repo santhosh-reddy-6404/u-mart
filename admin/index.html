@@ -227,12 +227,14 @@ return(<div>
 
 const Products = () => {
 
+const [ppic, setPpic] = useState('')
+
 function  uploadnewPic(e) {
 alert('please wait until you see the uploaded image here...');
 var a = e.target.files[0]
 const g = new Moralis.File('pic.webp', a)
 g.saveIPFS().then(() => {
-  sessionStorage.setItem('ppic', g.ipfs())
+  setPpic(g.ipfs())
 })
 }
 
@@ -376,7 +378,7 @@ return (<div>
     <input type="number" id="cost" placeholder="cost in ₹"></input>
     <input type="number" id="quantity" placeholder="no.of pieces"></input>
     <input className="file" type="file" accept="image/*" id="ppic" onChange={uploadnewPic}></input>
-    <img src={sessionStorage.getItem('ppic')} width="40%"></img>
+    <img src={ppic} width="40%"></img>
     <input type="text" id="category" placeholder="category"></input>
     <input type="text" id="brand" placeholder="brand"></input>
     <input type="text" id="featured" placeholder="featured (true/false)"></input>
