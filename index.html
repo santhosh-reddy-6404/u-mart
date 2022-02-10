@@ -127,6 +127,8 @@ return response.json().then((k) => {
 })
 }, [])
 
+sessionStorage.setItem('search',"");
+
 //Authentication...
 
 const [log, setLog] = useState(false)
@@ -357,7 +359,7 @@ return(<div className="PROFILE">
 //Search...
 
 const Search = () => {
-  
+
 var search = sessionStorage.getItem('search').toLowerCase()
 
 const filter = products.filter(e =>
