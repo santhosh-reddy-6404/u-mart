@@ -123,12 +123,13 @@ return response.json().then((k) => {
     padding: CryptoJS.pad.Pkcs7
   }).toString(CryptoJS.enc.Utf8)
   setWishlist(JSON.parse(object))
+  console.log(JSON.stringify(wishlist))
 })
 })
 }, [])
 
 const [wlist, setWlist] = useState(wishlist)
-console.log(JSON.stringify(wlist))
+
 sessionStorage.setItem('search',"");
 
 //Authentication...
