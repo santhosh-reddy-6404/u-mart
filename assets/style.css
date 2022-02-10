@@ -791,12 +791,12 @@ details summary b {
 .btns .wish {
   margin-right: 20px;
   height: 18px;
-  padding: 13px 15px 15px 15px;
+  padding: 12px 15px 15px 15px;
   color: white;
   text-align: center;
   background: #121C82;
   border-radius: 8px;
-  font-size: 18px;
+  font-size: 16px;
   font-family: 'Poppins', san-serif;
 }
 
@@ -804,6 +804,9 @@ details summary b {
   width: 50px;
   height: 38px;
   padding-top: 10px;
+  padding-bottom: 0;
+  padding-left: 0;
+  padding-right: 0;
   font-size: 20px;
   color: #1AE820;
 }
