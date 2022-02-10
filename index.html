@@ -73,6 +73,7 @@ const [det, setDet] = useState([{}])
 const [orders, setOrders] = useState([{}])
 const [reviews, setReviews] = useState([{}])
 const [wishlist, setWishlist] = useState([{}])
+const [wlist, setWlist] = useState(wishlist)
 
 useEffect(() => {
 db.doc('products').get().then(async (m) => {
@@ -123,12 +124,11 @@ return response.json().then((k) => {
     padding: CryptoJS.pad.Pkcs7
   }).toString(CryptoJS.enc.Utf8)
   setWishlist(JSON.parse(object))
+  setWlist(Wishlist)
   console.log(JSON.stringify(wishlist))
 })
 })
 }, [])
-
-const [wlist, setWlist] = useState(wishlist)
 
 sessionStorage.setItem('search',"");
 
