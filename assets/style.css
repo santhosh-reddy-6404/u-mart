@@ -790,9 +790,8 @@ details summary b {
 .btns .cart,
 .btns .wish {
   margin-right: 20px;
-  height: 35px;
-  padding-top: 13px;
-  width: 35%;
+  height: 18px;
+  padding: 13px 15px 15px 15px;
   color: white;
   text-align: center;
   background: #121C82;
