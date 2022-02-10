@@ -769,7 +769,7 @@ window.ethereum.request({ method: 'eth_sendTransaction', params: [{
   ethAddress : user,
   phone : orderData.pno,
   address: orderData.hno + ',' + orderData.area + ',' + orderData.lmark  + ',' + orderData.city  + ',' + orderData.state  + ',' + orderData.country  + ' - ' +
-  orderData.pinno ),
+  orderData.pinno,
   products : products.filter(e => localStorage.getItem(e.id)!==null).map(d => d.name+'('+ localStorage.getItem(d.id)+')'+' - '+d.cost),
   payment : 'ethereum',
   total : total,
