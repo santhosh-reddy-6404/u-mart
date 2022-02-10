@@ -128,7 +128,7 @@ return response.json().then((k) => {
 }, [])
 
 const [wishhlist, setWishhlist] = useState(wishlist)
-const [wlist, setWlist] = useState(wishlist.filter(e =>e.user===user))
+const [wlist, setWlist] = useState(wishlist)
 
 sessionStorage.setItem('search',"");
 
@@ -309,7 +309,7 @@ return(<div className="PROFILE">
 <div className="wp">
 <h1>Wishlist</h1>
 <div id="WPRODUCTS" className="PRODUCTS">
-{products.filter(product => JSON.stringify(wlist).includes(product.id)).map(d => (
+{products.filter(product => JSON.stringify(wlist.filter(e=>e.user===user)).includes(product.id)).map(d => (
   <div id="wproduct" className="product">
      <Link to={'/products/'+d.name}><img src={d.pic} width="20%"/></Link>
      <p className="name">{d.name}</p>
@@ -611,7 +611,7 @@ const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(object))})
 b.saveIPFS().then(() => {
   db.doc('wishlist').set({ ipfs : b.ipfs() })
   setWishIcon("far fa-heart")
-  setWlist(wishlist.filter(e=> e.user===user))
+  setWlist(wishlist)
   setWishhlist(wishlist)
 })
 
@@ -634,7 +634,7 @@ const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(object))})
 b.saveIPFS().then(() => {
   db.doc('wishlist').set({ ipfs : b.ipfs() })
   setWishIcon("fas fa-heart")
-  setWlist(wishlist.filter(e=> e.user===user))
+  setWlist(wishlist)
   setWishhlist(wishlist)
 })
 
