@@ -131,8 +131,6 @@ return response.json().then((k) => {
 
 sessionStorage.setItem('search',"");
 
-localStorage.setItem("loading","false")
-
 //Authentication...
 
 const [log, setLog] = useState(false)
@@ -582,7 +580,7 @@ useEffect(() => {
     setWish(false)
     setWishIcon("far fa-heart")
   }
-  if(localStorage.getItem("loading") === "true") {
+  if(localStorage.getItem(id+"w") === 'loading') {
   setWishIcon("fad fa-spinner-third fa-spin")
   }
 },[])
@@ -590,7 +588,7 @@ useEffect(() => {
 function Wish() {
 
 setWishIcon("fad fa-spinner-third fa-spin")
-localStorage.setItem("loading","true")
+localStorage.setItem(id+"w","loading")
 
 if(wish === true) {
 
@@ -611,7 +609,7 @@ b.saveIPFS().then(() => {
   db.doc('wishlist').set({ ipfs : b.ipfs() })
   setWishIcon("far fa-heart")
   setWlist(wishlist)
-  localStorage.setItem("loading","false")
+  localStorage.setItem(id+"w","false")
 })
 
 } else {
@@ -634,7 +632,7 @@ b.saveIPFS().then(() => {
   db.doc('wishlist').set({ ipfs : b.ipfs() })
   setWishIcon("fas fa-heart")
   setWlist(wishlist)
-  localStorage.setItem("loading","false")
+  localStorage.setItem(id+"w","false")
 })
 
 }
