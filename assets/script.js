@@ -7,8 +7,6 @@ Moralis.start({ serverUrl, appId });
 const NODE_URL = "https://speedy-nodes-nyc.moralis.io/dd08b911fb86268af02f8642/eth/ropsten";
 const provider = new Web3.providers.HttpProvider(NODE_URL);
 const web3 = new Web3(provider);
-const eth = web3.utils.fromWei('10000000000000000000', 'ether');
-console.log(eth);
 
 // Smart Contract.......
 
