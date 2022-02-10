@@ -128,6 +128,7 @@ return response.json().then((k) => {
 }, [])
 
 const wishhlist = wishlist
+const wlist = wishlist.filter(e =>e.user===user)
 
 sessionStorage.setItem('search',"");
 
@@ -230,8 +231,6 @@ const Profile = () => {
 
 const [balance, setBal] = useState('0')
 web3.eth.getBalance(user).then(function (balance) { setBal((web3.utils.fromWei(balance, 'ether').toString()).substr(0,6)); })
-
-const wlist = wishhlist.filter(e =>e.user===user)
 
 function confirmOrder(e) {
 let i = orders.findIndex(m => m.id === e);
