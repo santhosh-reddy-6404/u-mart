@@ -38,6 +38,8 @@
   
   <script src="https://cdn.jsdelivr.net/npm/web3@1.6.1/dist/web3.min.js"></script>
   
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script> 
+
   <script src="https://unpkg.com/moralis/dist/moralis.js"></script>
   
   <script src="/assets/script.js"></script>
@@ -94,7 +96,12 @@ var a = m.data();
 const url = a.ipfs
 const response = await fetch(url);
 return response.json().then((k) => {
-  setOrders(k)
+  const object = CryptoJS.AES.decrypt(k[0].hash, key, {
+    iv: iv,
+    mode: CryptoJS.mode.CBC,
+    padding: CryptoJS.pad.Pkcs7
+  }).toString(CryptoJS.enc.Utf8)
+  setOrders(JSON.parse(object))
 })
 })
 db.doc('reviews').get().then(async (m) => {
@@ -110,7 +117,12 @@ var a = m.data();
 const url = a.ipfs
 const response = await fetch(url);
 return response.json().then((k) => {
-  setWishlist(k)
+  const object = CryptoJS.AES.decrypt(k[0].hash, key, {
+    iv: iv,
+    mode: CryptoJS.mode.CBC,
+    padding: CryptoJS.pad.Pkcs7
+  }).toString(CryptoJS.enc.Utf8)
+  setWishlist(JSON.parse(object))
 })
 })
 }, [])
@@ -563,22 +575,22 @@ b.saveIPFS().then(() => {
 }
 
 const [wish, setWish] = useState(false)
-const [wash, setWash] = useState(false)
+const [wiish, setWiish] = useState(false)
 const [wlist, setWlist] = useState(wishlist)
 
 useEffect(() => {
   if(JSON.stringify(wishlist.filter(e => e.user == user)).includes(id)) {
     setWish(true)
-    setWash(true)
+    setWiish(true)
   } else {
     setWish(false)
-    setWash(false)
+    setWiish(false)
   }
 },[])
 
 function Wish() {
 
-setWash(!wash)
+setWiish(!wiish)
 
 if(wish === true) {
 
@@ -644,7 +656,7 @@ return(<div className="page">
 <div className="btns">
   <div onClick={Cart} className="cart">{cart? 'Add to Cart' : 'Remove'}</div>
   <div onClick={profLog} className="buy"><a><Link to={log?"/checkout":null}>Buy now</Link></a></div>
-  <div onClick={log?Wish:profLog} className="wish"><i className={wash?"fas fa-heart":"far fa-heart"}></i></div>
+  <div onClick={log?Wish:profLog} className="wish"><i className={wiish?"fas fa-heart":"far fa-heart"}></i></div>
 </div>
 
 {cart? null : <div className="qty">
@@ -734,16 +746,24 @@ window.ethereum.request({ method: 'eth_sendTransaction', params: [{
   total : total,
   status : 'false',
   secret: Date.now().toString().substr(-6)
-  })
+}).then(() => {
 
-const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(orders))})
+const hash = CryptoJS.AES.encrypt(JSON.stringify(orders), key, {
+  iv: iv,
+  mode: CryptoJS.mode.CBC,
+  padding: CryptoJS.pad.Pkcs7
+}).toString()
+
+const ordersHash = [{hash: hash}]
+
+const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(ordersHash))})
 b.saveIPFS().then(() => {
   db.doc('orders').set({   ipfs : b.ipfs()
   }).then(() => {
   alert('order successfull!')
   })
 })
-
+})
 })
 } else {null}
   
