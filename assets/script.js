@@ -18,6 +18,13 @@ const addr = "0x321ee8aD61b700054bCA0279cB8d7849451FebaD"
 
 const contract = new web3.eth.Contract(abi, addr)
 
+// Cypto-JS...
+// "fiv" & "fkey" should be stored in Environment Variable to secure them...
+const fiv = 'yourivare1234567'
+const fkey = '356d9abc7532ceb0945b615a622oc377'
+const key = CryptoJS.enc.Utf8.parse(fkey);
+const iv = CryptoJS.enc.Utf8.parse(fiv);
+
 // Firebase...
 
 const firebaseConfig = {
