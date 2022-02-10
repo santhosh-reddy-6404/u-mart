@@ -621,7 +621,7 @@ wishlist.push({
   product : id
 })
 
-var hash = CryptoJS.AES.encrypt(JSON.stringify([{}]), key, {
+var hash = CryptoJS.AES.encrypt(JSON.stringify(wishlist), key, {
     iv: iv,
     mode: CryptoJS.mode.CBC,
     padding: CryptoJS.pad.Pkcs7
