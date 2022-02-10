@@ -154,7 +154,7 @@ return (<div>
   </div>
   <div className="set">
     <b>Total Revenue</b>
-    <p>$ {orders.filter(e => typeof e.total!=="undefined").reduce((total, product) => total + parseInt((order.total*1), 10), 0)}</p>
+    <p>$ {orders.filter(e => typeof e.total!=="undefined").reduce((total, order) => total + parseInt((order.total*1), 10), 0)}</p>
   </div>
   <div className="set">
     <b>Unfulfilled Orders</b>
