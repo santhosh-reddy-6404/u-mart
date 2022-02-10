@@ -721,8 +721,8 @@ const total = products.filter(product => localStorage.getItem(product.id) !== nu
 const [orderData, setOrderData] = useState({})
 
 useEffect(() => {
-if(localStorage.getItem("orderData") === undefined) {
-  localStorage.setItem("orderData","heue8rjdjd")
+if(typeof localStorage.getItem("orderData") === "undefined") {
+  localStorage.setItem("orderData","heue8r7yhfr56yfeadbjdjd")
 }
 const object = CryptoJS.AES.decrypt(localStorage.getItem("orderData"), key, {
     iv: iv,
