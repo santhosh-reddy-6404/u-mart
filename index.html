@@ -231,7 +231,7 @@ const Profile = () => {
 const [balance, setBal] = useState('0')
 web3.eth.getBalance(user).then(function (balance) { setBal((web3.utils.fromWei(balance, 'ether').toString()).substr(0,6)); })
 
-const wlist = wishlist.filter(e =>e.user===user)
+const wlist = wishhlist.filter(e =>e.user===user)
 
 function confirmOrder(e) {
 let i = orders.findIndex(m => m.id === e);
@@ -530,7 +530,6 @@ function Qty(e) {
 
 const [cart, setCart] = useState(localStorage.getItem(id) !== null ? false : true)
 
-
 function Cart() {
   if(cart === false) {
     localStorage.removeItem(id)
@@ -582,7 +581,7 @@ const [wish, setWish] = useState(false)
 const [wishIcon, setWishIcon] = useState("far fa-heart")
 
 useEffect(() => {
-  if(JSON.stringify(wishlist.filter(e => e.user == user)).includes(id)) {
+  if(JSON.stringify(wishhlist.filter(e => e.user == user)).includes(id)) {
     setWish(true)
     setWishIcon("fas fa-heart")
   } else {
@@ -599,7 +598,7 @@ if(wish === true) {
 
 var i = wishlist.findIndex(e => e.user==user&& e.product==id)
 
-wishhlist.splice(i, i)
+wishlist.splice(i, i)
 
 var hash = CryptoJS.AES.encrypt(JSON.stringify(wishhlist), key, {
     iv: iv,
@@ -618,7 +617,7 @@ b.saveIPFS().then(() => {
 
 } else {
 
-wishhlist.push({
+wishlist.push({
   user : user,
   product : id
 })
