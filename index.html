@@ -736,7 +736,7 @@ window.ethereum.request({ method: 'eth_sendTransaction', params: [{
   to: addr,
   value: parseInt(web3.utils.toWei("0.1","ether")).toString(16),
   data: contract.methods.pay().encodeABI()
-}] }).then(() => {
+}] })
   alert('please wait until you get a success message...');
   orders.push({
   id : Date.now(),
@@ -768,7 +768,7 @@ b.saveIPFS().then(() => {
   })
 })
 })
-})
+
 } else {null}
   
 } else {
