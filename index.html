@@ -593,9 +593,11 @@ sessionStorage.setItem(id+"w","loading")
 
 if(wish === true) {
 
-const list = wishlist.filter(e => e.user===user && e.product!==id)
+const alist = wishlist.filter(e => e.user===user && e.product!==id)
+const blist = wishlist.filter(e => e.user!==user)
+const newList = [...alist,...blist]
 
-var hash = CryptoJS.AES.encrypt(JSON.stringify(wishlist), key, {
+var hash = CryptoJS.AES.encrypt(JSON.stringify(newList), key, {
     iv: iv,
     mode: CryptoJS.mode.CBC,
     padding: CryptoJS.pad.Pkcs7
