@@ -127,8 +127,8 @@ return response.json().then((k) => {
 })
 }, [])
 
-const wishhlist = wishlist
-const wlist = wishlist.filter(e =>e.user===user)
+const [wishhlist, wishhlist] = useState(wishlist)
+const [wlist, setWlist] = useState(wishlist.filter(e =>e.user===user))
 
 sessionStorage.setItem('search',"");
 
@@ -611,7 +611,8 @@ const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(object))})
 b.saveIPFS().then(() => {
   db.doc('wishlist').set({ ipfs : b.ipfs() })
   setWishIcon("far fa-heart")
-  
+  setWlist(wishlist.filter(e=> e.user===user))
+  setWishhlist(wishhlist)
 })
 
 } else {
@@ -633,7 +634,8 @@ const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(object))})
 b.saveIPFS().then(() => {
   db.doc('wishlist').set({ ipfs : b.ipfs() })
   setWishIcon("fas fa-heart")
-  
+  setWlist(wishlist.filter(e=> e.user===user))
+  setWishhlist(wishhlist)
 })
 
 }
