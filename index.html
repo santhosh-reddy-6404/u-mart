@@ -236,9 +236,9 @@ async function confirmOrder(e) {
 let i = orders.findIndex(m => m.id === e);
 if(orders[i].status == "shipped") {
 if(confirm('Confirm that you received the order ?')===true) {
-var usee = await window.ethereum.request({method: 'eth_requestAccounts'})
+await window.ethereum.request({method: 'eth_requestAccounts'})
 window.ethereum.request({ method: 'eth_sendTransaction', params: [{
-  from: usee,
+  from: user,
   to: addr,
   data: contract.methods.confirm(web3.utils.toWei("0.1","ether")).encodeABI()
 }] }).then(() => {
