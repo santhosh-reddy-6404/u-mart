@@ -127,6 +127,8 @@ return response.json().then((k) => {
 })
 }, [])
 
+const wlist = wishlist;
+
 sessionStorage.setItem('search',"");
 
 //Authentication...
@@ -578,7 +580,6 @@ b.saveIPFS().then(() => {
 
 const [wish, setWish] = useState(false)
 const [wishIcon, setWishIcon] = useState("far fa-heart")
-const wlist = wishlist;
 
 useEffect(() => {
   if(JSON.stringify(wishlist.filter(e => e.user == user)).includes(id)) {
@@ -612,7 +613,7 @@ const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(object))})
 b.saveIPFS().then(() => {
   db.doc('wishlist').set({ ipfs : b.ipfs() })
   setWishIcon("far fa-heart")
-  
+  setWishlist(wlist);
 })
 
 } else {
@@ -634,7 +635,7 @@ const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(object))})
 b.saveIPFS().then(() => {
   db.doc('wishlist').set({ ipfs : b.ipfs() })
   setWishIcon("far fa-heart")
-  
+  setWishlist(wlist);
 })
 
 }
