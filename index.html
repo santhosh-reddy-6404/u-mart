@@ -580,7 +580,7 @@ useEffect(() => {
     setWish(false)
     setWishIcon("far fa-heart")
   }
-  if(localStorage.getItem(id+"w") === 'loading') {
+  if(sessionStorage.getItem(id+"w") === 'loading') {
   setWishIcon("fad fa-spinner-third fa-spin")
   }
 },[])
@@ -588,7 +588,7 @@ useEffect(() => {
 function Wish() {
 
 setWishIcon("fad fa-spinner-third fa-spin")
-localStorage.setItem(id+"w","loading")
+sessionStorage.setItem(id+"w","loading")
 
 if(wish === true) {
 
@@ -608,8 +608,9 @@ const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(object))})
 b.saveIPFS().then(() => {
   db.doc('wishlist').set({ ipfs : b.ipfs() })
   setWishIcon("far fa-heart")
-  setWlist(wishlist)
-  localStorage.setItem(id+"w","false")
+  var x = JSON.stringify(wishlist)
+  setWlist(JSON.parse(x))
+  sessionStorage.setItem(id+"w","false")
 })
 
 } else {
@@ -631,8 +632,9 @@ const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(object))})
 b.saveIPFS().then(() => {
   db.doc('wishlist').set({ ipfs : b.ipfs() })
   setWishIcon("fas fa-heart")
-  setWlist(wishlist)
-  localStorage.setItem(id+"w","false")
+  var x = JSON.stringify(wishlist)
+  setWlist(JSON.parse(x))
+  sessionStorage.setItem(id+"w","false")
 })
 
 }
