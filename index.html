@@ -242,20 +242,17 @@ window.ethereum.request({ method: 'eth_sendTransaction', params: [{
 }] }).then(() => {
 alert('please wait until you get a success message...');
 orders[i].status="true";
-const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(orders))})
+const hash = CryptoJS.AES.encrypt(JSON.stringify(orders), key, {
+  iv: iv,
+  mode: CryptoJS.mode.CBC,
+  padding: CryptoJS.pad.Pkcs7
+}).toString()
+const ordersHash = [{"hash": hash}]
+const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(ordersHash))})
 b.saveIPFS().then(() => {
-  db.doc('orders').set({   ipfs : b.ipfs()
-  }).then(async() => {
-db.doc('orders').get().then(async (m) => {
-var a = m.data();
-const url = a.ipfs
-const response = await fetch(url);
-return response.json().then((k) => {
-  setOrders(k)
-})
-})
-  alert('Confirmed! Your order pin is - '+orders[i].secret)
-  })
+  db.doc('orders').set({ ipfs : b.ipfs() })
+  setNone(Date.now())
+  alert('order confirmed & completed)
 })
 })
 } else {null}
@@ -272,21 +269,18 @@ window.ethereum.request({ method: 'eth_sendTransaction', params: [{
   data: contract.methods.cancel(web3.utils.toWei("0.1","ether")).encodeABI()
 }] }).then(() => {
 alert('please wait until you get a success message...');
-orders[i].status="cancelled";
-const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(orders))})
+orders[i].status="true";
+const hash = CryptoJS.AES.encrypt(JSON.stringify(orders), key, {
+  iv: iv,
+  mode: CryptoJS.mode.CBC,
+  padding: CryptoJS.pad.Pkcs7
+}).toString()
+const ordersHash = [{"hash": hash}]
+const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(ordersHash))})
 b.saveIPFS().then(() => {
-  db.doc('orders').set({   ipfs : b.ipfs()
-  }).then(async() => {
-db.doc('orders').get().then(async (m) => {
-var a = m.data();
-const url = a.ipfs
-const response = await fetch(url);
-return response.json().then((k) => {
-  setOrders(k)
-})
-})
-  alert('Order Cancelled !')
-  })
+  db.doc('orders').set({ ipfs : b.ipfs() })
+  setNone(Date.now())
+  alert('order cancelled!')
 })
 })
 } else {null}
