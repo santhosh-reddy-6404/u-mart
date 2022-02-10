@@ -127,6 +127,8 @@ return response.json().then((k) => {
 })
 }, [])
 
+const wishhlist = wishlist
+
 sessionStorage.setItem('search',"");
 
 //Authentication...
@@ -578,7 +580,6 @@ b.saveIPFS().then(() => {
 
 const [wish, setWish] = useState(false)
 const [wishIcon, setWishIcon] = useState("far fa-heart")
-const [wishhlist, setWishhlist] = useState(wishlist)
 
 useEffect(() => {
   if(JSON.stringify(wishlist.filter(e => e.user == user)).includes(id)) {
