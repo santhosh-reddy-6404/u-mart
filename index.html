@@ -593,9 +593,7 @@ sessionStorage.setItem(id+"w","loading")
 
 if(wish === true) {
 
-var i = wishlist.findIndex(e => e.user==user&& e.product==id)
-
-wishlist.splice(i, i)
+const list = wishlist.filter(e => e.user===user && e.product!==id)
 
 var hash = CryptoJS.AES.encrypt(JSON.stringify(wishlist), key, {
     iv: iv,
