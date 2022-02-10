@@ -127,7 +127,7 @@ return response.json().then((k) => {
 })
 }, [])
 
-const [wishhlist, wishhlist] = useState(wishlist)
+const [wishhlist, setWishhlist] = useState(wishlist)
 const [wlist, setWlist] = useState(wishlist.filter(e =>e.user===user))
 
 sessionStorage.setItem('search',"");
