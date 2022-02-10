@@ -252,7 +252,7 @@ const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(ordersHash))}
 b.saveIPFS().then(() => {
   db.doc('orders').set({ ipfs : b.ipfs() })
   setNone(Date.now())
-  alert('order confirmed & completed)
+  alert('order confirmed & completed')
 })
 })
 } else {null}
