@@ -633,7 +633,7 @@ const object = [{ "hash": hash }]
 const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(object))})
 b.saveIPFS().then(() => {
   db.doc('wishlist').set({ ipfs : b.ipfs() })
-  setWishIcon("far fa-heart")
+  setWishIcon("fas fa-heart")
   
 })
 
