@@ -627,7 +627,6 @@ b.saveIPFS().then(() => {
   db.doc('wishlist').set({ ipfs : b.ipfs() })
   setWishIcon("fas fa-heart")
   setWlist(wishlist)
-  console.log(wlist)
 })
 
 }
@@ -728,8 +727,6 @@ if(localStorage.getItem('orderData')) {
     padding: CryptoJS.pad.Pkcs7
   }).toString(CryptoJS.enc.Utf8)
   setOrderData(JSON.parse(object))
-} else { 
-  null
 }
 }, [])
 
