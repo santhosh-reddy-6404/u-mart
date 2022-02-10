@@ -264,6 +264,7 @@ function cancelOrder(e) {
 let i = orders.findIndex(m => m.id === e);
 if(orders[i].status == "false"||orders[i].status == "shipped") {
 if(confirm('Confirm that you want to cancel the order ?')===true) {
+window.ethereum.request({method: 'eth_requestAccounts'})
 window.ethereum.request({ method: 'eth_sendTransaction', params: [{
   from: user,
   to: addr,
