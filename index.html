@@ -758,8 +758,8 @@ localStorage.setItem("orderData", hash)
 
 function formSubmit() {
 
-if(localStorage.getItem('name')!==""&&localStorage.getItem('p.no')!==""&&localStorage.getItem('c.p.no')!==""&&localStorage.getItem('p.no').length==10&&localStorage.getItem('p.no')==localStorage.getItem('c.p.no')&&localStorage.getItem('h.no')!==""&&localStorage.getItem('h.no')!==""&&localStorage.getItem('area')!==""&&localStorage.getItem('lmark')!==""&&localStorage.getItem('city')!==""&&localStorage.getItem('pin.no')!==""&&localStorage.getItem('pin.no').length==6&&localStorage.getItem('state')!==""&& localStorage.getItem('country')!=="" && products.filter(e => localStorage.getItem(e.id)!==null).length!==0){
-  
+if(orderData.name !==""&&orderData.pno !==""&&orderData.c.p.no !==""&&orderData.pno .length==10&&orderData.pno ==orderData.cpno &&orderData.hno !==""&&orderData.hno !==""&&orderData.area !==""&&orderData.lmark !==""&&orderData.city !==""&&orderData.pin.no !==""&&orderData.pinno.length==6&&orderData.state !==""&& orderData.country !=="" && products.filter(e => localStorage.getItem(e.id)!==null).length!==0){
+
 if(confirm('Confirm Order ?') === true) {
 
 window.ethereum.request({ method: 'eth_sendTransaction', params: [{
@@ -771,11 +771,11 @@ window.ethereum.request({ method: 'eth_sendTransaction', params: [{
   alert('please wait until you get a success message...');
   orders.push({
   id : Date.now(),
-  name : localStorage.getItem('name')+' ('+user.substr(0,5)+'....'+user.substr(-5)+')' ,
+  name : orderData.name+' ('+user.substr(0,5)+'....'+user.substr(-5)+')' ,
   ethAddress : user,
-  phone : localStorage.getItem('p.no'),
-  address : localStorage.getItem('h.no')+','+localStorage.getItem('area')+','+localStorage.getItem('lmark')+','+localStorage.getItem('city')+','+localStorage.getItem('state')+','+localStorage.getItem('country')+' - '
-    +localStorage.getItem('pin.no'),
+  phone : orderData.pno,
+  address: orderData.hno + ',' + orderData.area + ',' + orderData.lmark  + ',' + orderData.city  + ',' + orderData.state  + ',' + orderData.country  + ' - ' +
+  orderData.pinno ),
   products : products.filter(e => localStorage.getItem(e.id)!==null).map(d => d.name+'('+ localStorage.getItem(d.id)+')'+' - '+d.cost),
   payment : 'ethereum',
   total : total,
