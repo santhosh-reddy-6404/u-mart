@@ -122,14 +122,14 @@ return response.json().then((k) => {
     mode: CryptoJS.mode.CBC,
     padding: CryptoJS.pad.Pkcs7
   }).toString(CryptoJS.enc.Utf8)
-  setWishlist(JSON.parse(object))
+  setWishlist([{user:"", product:""}])
 })
 })
 }, [])
 
 const [wishhlist, setWishhlist] = useState(wishlist)
 const [wlist, setWlist] = useState(wishlist)
-console.log(JSON.stringify(wlist))
+console.log(JSON.stringify(wishlist))
 sessionStorage.setItem('search',"");
 
 //Authentication...
