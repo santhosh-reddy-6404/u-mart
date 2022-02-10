@@ -127,8 +127,6 @@ return response.json().then((k) => {
 })
 }, [])
 
-const wlist = wishlist;
-
 sessionStorage.setItem('search',"");
 
 //Authentication...
@@ -580,6 +578,7 @@ b.saveIPFS().then(() => {
 
 const [wish, setWish] = useState(false)
 const [wishIcon, setWishIcon] = useState("far fa-heart")
+const wishhlist = wishlist;
 
 useEffect(() => {
   if(JSON.stringify(wlist.filter(e => e.user == user)).includes(id)) {
@@ -599,7 +598,7 @@ if(wish === true) {
 
 var i = wishlist.findIndex(e => e.user==user&& e.product==id)
 
-wlist.splice(i, i)
+wishhlist.splice(i, i)
 
 var hash = CryptoJS.AES.encrypt(JSON.stringify(wishlist), key, {
     iv: iv,
@@ -618,7 +617,7 @@ b.saveIPFS().then(() => {
 
 } else {
 
-wlist.push({
+wishhlist.push({
   user : user,
   product : id
 })
