@@ -73,7 +73,7 @@ const [det, setDet] = useState([{}])
 const [orders, setOrders] = useState([{}])
 const [reviews, setReviews] = useState([{}])
 const [wishlist, setWishlist] = useState([{}])
-const [wlist, setWlist] = useState(wishlist)
+const [wlist, setWlist] = useState([{}])
 
 useEffect(() => {
 db.doc('products').get().then(async (m) => {
@@ -124,7 +124,7 @@ return response.json().then((k) => {
     padding: CryptoJS.pad.Pkcs7
   }).toString(CryptoJS.enc.Utf8)
   setWishlist(JSON.parse(object))
-  setWlist(wishlist)
+  setWlist(JSON.parse(object))
   console.log(JSON.stringify(wlist))
 })
 })
