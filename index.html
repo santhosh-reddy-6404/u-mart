@@ -125,7 +125,7 @@ return response.json().then((k) => {
   setWishlist(JSON.parse(object))
 })
 })
-}, [])
+}, [wishlist, orders])
 
 sessionStorage.setItem('search',"");
 
@@ -600,18 +600,17 @@ var i = wishlist.findIndex(e => e.user==user&& e.product==id)
 
 wishlist.splice(i, i)
 
-const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(wishlist))})
+var hash = CryptoJS.AES.encrypt(JSON.stringify(wishlist), key, {
+    iv: iv,
+    mode: CryptoJS.mode.CBC,
+    padding: CryptoJS.pad.Pkcs7
+}).toString()
+ 
+const object = [{ "hash": hash }]
+
+const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(object))})
 b.saveIPFS().then(() => {
-  db.doc('wishlist').set({   ipfs : b.ipfs()
-  })
-    db.doc('wishlist').get().then(async (m) => {
-    var a = m.data();
-    const url = a.ipfs
-    const response = await fetch(url);
-    return response.json().then((k) => {
-    setWlist(k)
-    })
-    })
+  db.doc('wishlist').set({ ipfs : b.ipfs() })
 })
 
 } else {
@@ -621,19 +620,19 @@ wishlist.push({
   product : id
 })
 
-const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(wishlist))})
+var hash = CryptoJS.AES.encrypt(JSON.stringify(wishlist), key, {
+    iv: iv,
+    mode: CryptoJS.mode.CBC,
+    padding: CryptoJS.pad.Pkcs7
+}).toString()
+ 
+const object = [{ "hash": hash }]
+
+const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(object))})
 b.saveIPFS().then(() => {
-  db.doc('wishlist').set({   ipfs : b.ipfs()
-  })
-    db.doc('wishlist').get().then(async (m) => {
-    var a = m.data();
-    const url = a.ipfs
-    const response = await fetch(url);
-    return response.json().then((k) => {
-    setWlist(k)
-    })
-    })
+  db.doc('wishlist').set({ ipfs : b.ipfs() })
 })
+
 }
 setWishlist(wlist)
 }
@@ -756,7 +755,7 @@ const hash = CryptoJS.AES.encrypt(JSON.stringify(orders), key, {
   padding: CryptoJS.pad.Pkcs7
 }).toString()
 
-const ordersHash = [{hash: hash}]
+const ordersHash = [{"hash": hash}]
 
 const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(ordersHash))})
 b.saveIPFS().then(() => {
