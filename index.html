@@ -128,6 +128,7 @@ return response.json().then((k) => {
 }, [])
 
 const [wlist, setWlist] = useState(wishlist)
+console.log(JSON.stringify(wlist))
 sessionStorage.setItem('search',"");
 
 //Authentication...
@@ -632,6 +633,7 @@ b.saveIPFS().then(() => {
   db.doc('wishlist').set({ ipfs : b.ipfs() })
   setWishIcon("fas fa-heart")
   setWlist(wishlist)
+  console.log(JSON.stringify(wlist))
 })
 
 }
