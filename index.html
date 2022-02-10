@@ -598,7 +598,7 @@ if(wish === true) {
 
 var i = wishlist.findIndex(e => e.user==user&& e.product==id)
 
-wishlist.splice(i, i)
+wlist.splice(i, i)
 
 var hash = CryptoJS.AES.encrypt(JSON.stringify(wishlist), key, {
     iv: iv,
@@ -612,11 +612,12 @@ const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(object))})
 b.saveIPFS().then(() => {
   db.doc('wishlist').set({ ipfs : b.ipfs() })
   setWishIcon("far fa-heart")
+  setWishlist(wlist)
 })
 
 } else {
 
-wishlist.push({
+wlist.push({
   user : user,
   product : id
 })
@@ -633,6 +634,7 @@ const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(object))})
 b.saveIPFS().then(() => {
   db.doc('wishlist').set({ ipfs : b.ipfs() })
   setWishIcon("far fa-heart")
+  setWishlist(wlist)
 })
 
 }
