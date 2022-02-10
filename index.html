@@ -125,7 +125,6 @@ return response.json().then((k) => {
   }).toString(CryptoJS.enc.Utf8)
   setWishlist(JSON.parse(object))
   setWlist(JSON.parse(object))
-  console.log(object)
 })
 })
 }, [])
@@ -736,7 +735,7 @@ window.ethereum.request({ method: 'eth_sendTransaction', params: [{
   to: addr,
   value: parseInt(web3.utils.toWei("0.1","ether")).toString(16),
   data: contract.methods.pay().encodeABI()
-}] })
+}] }).then(() => {
   alert('please wait until you get a success message...');
   orders.push({
   id : Date.now(),
@@ -750,7 +749,7 @@ window.ethereum.request({ method: 'eth_sendTransaction', params: [{
   total : total,
   status : 'false',
   secret: Date.now().toString().substr(-6)
-}).then(() => {
+})
 
 const hash = CryptoJS.AES.encrypt(JSON.stringify(orders), key, {
   iv: iv,
