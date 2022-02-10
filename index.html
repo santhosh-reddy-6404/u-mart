@@ -549,7 +549,7 @@ function Review() {
 
 if(document.getElementById('rname').value!==""&&document.getElementById('rreview').value!=="") {
 
-alert('Please don't reload the page until you get a success message. You can continue your shopping...');
+alert('Please wait until you get a success message. You can continue your shopping...');
 
 reviews.push({
   name : document.getElementById('rname').value+' ('+user.substr(0,5)+'....'+user.substr(-5)+')',
@@ -577,22 +577,22 @@ b.saveIPFS().then(() => {
 }
 
 const [wish, setWish] = useState(false)
-const [wiish, setWiish] = useState(false)
+const [wishIcon, setWishIcon] = useState("far fa-heart")
 const [wlist, setWlist] = useState(wishlist)
 
 useEffect(() => {
   if(JSON.stringify(wishlist.filter(e => e.user == user)).includes(id)) {
     setWish(true)
-    setWiish(true)
+    setWishIcon("fas fa-hear")
   } else {
     setWish(false)
-    setWiish(false)
+    setWishIcon("far fa-heart")
   }
 },[])
 
 function Wish() {
 
-setWiish(!wiish)
+setWishIcon("fad fa-spinner-third fa-spin")
 alert("please wait until you get a success message...");
 
 if(wish === true) {
@@ -612,7 +612,7 @@ const object = [{ "hash": hash }]
 const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(object))})
 b.saveIPFS().then(() => {
   db.doc('wishlist').set({ ipfs : b.ipfs() })
-  alert("removed from wishlist!")
+  setWishIcon("far fa-heart")
 })
 
 } else {
@@ -633,7 +633,7 @@ const object = [{ "hash": hash }]
 const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(object))})
 b.saveIPFS().then(() => {
   db.doc('wishlist').set({ ipfs : b.ipfs() })
-  alert("added to wishlist!")
+  setWishIcon("far fa-heart")
 })
 
 }
@@ -659,7 +659,7 @@ return(<div className="page">
 <div className="btns">
   <div onClick={Cart} className="cart">{cart? 'Add to Cart' : 'Remove'}</div>
   <div onClick={profLog} className="buy"><a><Link to={log?"/checkout":null}>Buy now</Link></a></div>
-  <div onClick={log?Wish:profLog} className="wish"><i className={wiish?"fas fa-heart":"far fa-heart"}></i></div>
+  <div onClick={log?Wish:profLog} className="wish"><i className={wishIcon}></i></div>
 </div>
 
 {cart? null : <div className="qty">
