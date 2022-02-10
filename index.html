@@ -581,7 +581,7 @@ const [wishIcon, setWishIcon] = useState("far fa-heart")
 const [wishhlist, setWishhlist] = useState(wishlist)
 
 useEffect(() => {
-  if(JSON.stringify(wlist.filter(e => e.user == user)).includes(id)) {
+  if(JSON.stringify(wishlist.filter(e => e.user == user)).includes(id)) {
     setWish(true)
     setWishIcon("fas fa-heart")
   } else {
