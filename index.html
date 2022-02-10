@@ -724,6 +724,37 @@ const Checkout = () => {
 
 const total = products.filter(product => localStorage.getItem(product.id) !== null).reduce((total, product) => total + parseInt((product.cost*localStorage.getItem(product.id)), 10), 0)
 
+const [orderData, setOrderData] = useState({})
+
+useEffect(() => {
+const object = CryptoJS.AES.decrypt(localStorage.getItem("orderData"), key, {
+    iv: iv,
+    mode: CryptoJS.mode.CBC,
+    padding: CryptoJS.pad.Pkcs7
+  }).toString(CryptoJS.enc.Utf8)
+}, [])
+
+function handleOrderData() {
+orderData.name: document.getElementById('name').value,
+orderData.pno: document.getElementById('pno').value,
+orderData.cpno: document.getElementById('cpno').value,
+orderData.hno: document.getElementById('hno').value,
+orderData.area: document.getElementById('area').value,
+orderData.lmark: document.getElementById('lmark').value,
+orderData.city: document.getElementById('city').value,
+orderData.pinno: document.getElementById('pinno').value,
+orderData.state: document.getElementById('state').value,
+orderData.country: document.getElementById('country').value
+
+const hash = CryptoJS.AES.encrypt(JSON.stringify(orderData), key, {
+  iv: iv,
+  mode: CryptoJS.mode.CBC,
+  padding: CryptoJS.pad.Pkcs7
+}).toString()
+localStorage.setItem("orderData", hash)
+
+}
+
 function formSubmit() {
 
 if(localStorage.getItem('name')!==""&&localStorage.getItem('p.no')!==""&&localStorage.getItem('c.p.no')!==""&&localStorage.getItem('p.no').length==10&&localStorage.getItem('p.no')==localStorage.getItem('c.p.no')&&localStorage.getItem('h.no')!==""&&localStorage.getItem('h.no')!==""&&localStorage.getItem('area')!==""&&localStorage.getItem('lmark')!==""&&localStorage.getItem('city')!==""&&localStorage.getItem('pin.no')!==""&&localStorage.getItem('pin.no').length==6&&localStorage.getItem('state')!==""&& localStorage.getItem('country')!=="" && products.filter(e => localStorage.getItem(e.id)!==null).length!==0){
@@ -797,32 +828,32 @@ return (<div>
 <div className="form1">
 
   <label className="name">Full Name<br/>
-  <input type="text" placeholder="Santhosh Reddy" defaultValue={localStorage.getItem('name')} onChange={e => localStorage.setItem('name',e.target.value)} />
+  <input type="text" placeholder="Santhosh Reddy" defaultValue={orderData.name}  id="name" onChange={(e) => handleOrderData()}/>
   </label><br/>
   
   <label className="no">Contact Number<br/>
-  <input type="number" placeholder="+91 9640202298" defaultValue={localStorage.getItem('p.no')} onChange={e=> localStorage.setItem('p.no',e.target.value)} />
+  <input type="number" placeholder="+91 9640202298" defaultValue={orderData.pno}  id="pno" onChange={(e) => handleOrderData()} />
   </label>
   
   <label className="no">Confirm Number<br/>
-  <input type="number" defaultValue ={localStorage.getItem('c.p.no')} onChange={e => localStorage.setItem('c.p.no', e.target.value)} />
-  </label>
+  <input type="number" defaultValue={orderData.cpno}  id="cpno" onChange={(e) => handleOrderData()} />
+  </label> 
 
   <label className="add">Deliver Address<br/>
   
-  <input type="text" placeholder="home / flat, building, apartment" defaultValue ={localStorage.getItem('h.no')} onChange={e => localStorage.setItem('h.no', e.target.value)}/>
+  <input type="text" placeholder="home / flat, building, apartment" defaultValue={orderData.hno}  id="hno" onChange={(e) => handleOrderData()}/>
   
-  <input type="text" placeholder="Area, colony, village" defaultValue ={localStorage.getItem('area')} onChange={e => localStorage.setItem('area', e.target.value)}/> 
+  <input type="text" placeholder="Area, colony, village" defaultValue={orderData.area}  id="area" onChange={(e) => handleOrderData()}/> 
   
-  <input type="text" placeholder="e.g. Near Apollo Hospital" defaultValue ={localStorage.getItem('lmark')} onChange={e => localStorage.setItem('lmark', e.target.value)}/>
+  <input type="text" placeholder="e.g. Near Apollo Hospital" defaultValue={orderData.lmark}  id="lmark" onChange={(e) => handleOrderData()}/>
   
-  <input type="text" placeholder="Town / City" defaultValue ={localStorage.getItem('city')} onChange={e => localStorage.setItem('city', e.target.value)}/>
+  <input type="text" placeholder="Town / City" defaultValue={orderData.city}  id="city" onChange={(e) => handleOrderData()}/>
   
-  <input type="number" placeholder="e.g. 508284" defaultValue ={localStorage.getItem('pin.no')} onChange={e => localStorage.setItem('pin.no', e.target.value)}/> 
+  <input type="number" placeholder="e.g. 508284" defaultValue={orderData.pinno}  id="pinno" onChange={(e) => handleOrderData()}/> 
   
-  <input type="text" placeholder="e.g. Telangana" defaultValue ={localStorage.getItem('state')} onChange={e => localStorage.setItem('state', e.target.value)}/>
+  <input type="text" placeholder="e.g. Telangana" defaultValue={orderData.state}  id="state" onChange={(e) => handleOrderData()}/>
   
-  <input type="text" placeholder="e.g. India" defaultValue ={localStorage.getItem('country')} onChange={e => localStorage.setItem('country', e.target.value)}/>
+  <input type="text" placeholder="e.g. India" defaultValue={orderData.country}  id="country" onChange={(e) => handleOrderData()}/>
   
   </label>
 
