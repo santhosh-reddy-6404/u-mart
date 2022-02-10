@@ -125,7 +125,7 @@ return response.json().then((k) => {
   setWishlist(JSON.parse(object))
 })
 })
-}, [wishlist, orders])
+}, [])
 
 sessionStorage.setItem('search',"");
 
@@ -611,8 +611,9 @@ const object = [{ "hash": hash }]
 const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(object))})
 b.saveIPFS().then(() => {
   db.doc('wishlist').set({ ipfs : b.ipfs() })
+  console.log(b.ipfs());
 })
-console.log(b.ipfs());
+
 } else {
 
 wishlist.push({
@@ -631,10 +632,10 @@ const object = [{ "hash": hash }]
 const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(object))})
 b.saveIPFS().then(() => {
   db.doc('wishlist').set({ ipfs : b.ipfs() })
+  console.log(b.ipfs());
 })
-console.log(b.ipfs())
+
 }
-setWishlist(wlist)
 }
 
 return(<div className="page">
