@@ -735,16 +735,16 @@ const object = CryptoJS.AES.decrypt(localStorage.getItem("orderData"), key, {
 }, [])
 
 function handleOrderData() {
-orderData.name: document.getElementById('name').value,
-orderData.pno: document.getElementById('pno').value,
-orderData.cpno: document.getElementById('cpno').value,
-orderData.hno: document.getElementById('hno').value,
-orderData.area: document.getElementById('area').value,
-orderData.lmark: document.getElementById('lmark').value,
-orderData.city: document.getElementById('city').value,
-orderData.pinno: document.getElementById('pinno').value,
-orderData.state: document.getElementById('state').value,
-orderData.country: document.getElementById('country').value
+orderData.name = document.getElementById('name').value,
+orderData.pno = document.getElementById('pno').value,
+orderData.cpno = document.getElementById('cpno').value,
+orderData.hno = document.getElementById('hno').value,
+orderData.area = document.getElementById('area').value,
+orderData.lmark = document.getElementById('lmark').value,
+orderData.city = document.getElementById('city').value,
+orderData.pinno = document.getElementById('pinno').value,
+orderData.state = document.getElementById('state').value,
+orderData.country = document.getElementById('country').value
 
 const hash = CryptoJS.AES.encrypt(JSON.stringify(orderData), key, {
   iv: iv,
