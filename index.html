@@ -599,7 +599,7 @@ var i = wishlist.findIndex(e => e.user==user&& e.product==id)
 
 wishlist.splice(i, i)
 
-var hash = CryptoJS.AES.encrypt(JSON.stringify(wishhlist), key, {
+var hash = CryptoJS.AES.encrypt(JSON.stringify(wishlist), key, {
     iv: iv,
     mode: CryptoJS.mode.CBC,
     padding: CryptoJS.pad.Pkcs7
@@ -622,7 +622,7 @@ wishlist.push({
   product : id
 })
 
-var hash = CryptoJS.AES.encrypt(JSON.stringify(wishhlist), key, {
+var hash = CryptoJS.AES.encrypt(JSON.stringify(wishlist), key, {
     iv: iv,
     mode: CryptoJS.mode.CBC,
     padding: CryptoJS.pad.Pkcs7
