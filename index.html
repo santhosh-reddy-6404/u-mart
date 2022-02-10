@@ -611,7 +611,7 @@ const object = [{ "hash": hash }]
 const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(object))})
 b.saveIPFS().then(() => {
   db.doc('wishlist').set({ ipfs : b.ipfs() })
-  console.log(b.ipfs());
+  alert("removed to wishlist!")
 })
 
 } else {
@@ -632,7 +632,7 @@ const object = [{ "hash": hash }]
 const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(object))})
 b.saveIPFS().then(() => {
   db.doc('wishlist').set({ ipfs : b.ipfs() })
-  console.log(b.ipfs());
+  alert("added to wishlist!")
 })
 
 }
