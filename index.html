@@ -578,7 +578,7 @@ b.saveIPFS().then(() => {
 
 const [wish, setWish] = useState(false)
 const [wishIcon, setWishIcon] = useState("far fa-heart")
-const wishhlist = wishlist;
+const [wishhlist, setWishhlist] = useState(wishlist)
 
 useEffect(() => {
   if(JSON.stringify(wlist.filter(e => e.user == user)).includes(id)) {
