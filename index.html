@@ -309,7 +309,7 @@ return(<div className="PROFILE">
 <div className="wp">
 <h1>Wishlist</h1>
 <div id="WPRODUCTS" className="PRODUCTS">
-{products.filter(product => JSON.stringify(wlist.filter(e=>e.user===user)).includes(product.id)).map(d => (
+{products.filter(product => wlist.filter(e=>e.user===user && e.product===product.id).map(d => (
   <div id="wproduct" className="product">
      <Link to={'/products/'+d.name}><img src={d.pic} width="20%"/></Link>
      <p className="name">{d.name}</p>
