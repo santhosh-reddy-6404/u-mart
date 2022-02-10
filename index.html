@@ -122,7 +122,7 @@ return response.json().then((k) => {
     mode: CryptoJS.mode.CBC,
     padding: CryptoJS.pad.Pkcs7
   }).toString(CryptoJS.enc.Utf8)
-  setWishlist([{user:"", product:""}])
+  setWishlist(JSON.parse(object))
 })
 })
 }, [])
