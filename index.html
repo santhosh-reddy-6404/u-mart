@@ -634,7 +634,20 @@ b.saveIPFS().then(() => {
   db.doc('wishlist').set({ ipfs : b.ipfs() })
   setWishIcon("fas fa-heart")
   setWlist(wishlist)
-  console.log(JSON.stringify(wlist))
+  db.doc('wishlist').get().then(async (m) => {
+var a = m.data();
+const url = a.ipfs
+const response = await fetch(url);
+return response.json().then((k) => {
+  const object = CryptoJS.AES.decrypt(k[0].hash, key, {
+    iv: iv,
+    mode: CryptoJS.mode.CBC,
+    padding: CryptoJS.pad.Pkcs7
+  }).toString(CryptoJS.enc.Utf8)
+  setWishlist(JSON.parse(object))
+  console.log(JSON.stringify(wishlist))
+})
+})
 })
 
 }
