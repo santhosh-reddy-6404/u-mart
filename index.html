@@ -616,7 +616,12 @@ b.saveIPFS().then(() => {
 })
 
 } else {
-wishlist.push({user : user,product : id})
+
+wishlist.push({
+  user : user,
+  product : id
+})
+
 const x = wishlist;
 var hash = CryptoJS.AES.encrypt(JSON.stringify(x), key, {
     iv: iv,
