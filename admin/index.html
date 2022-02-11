@@ -357,7 +357,7 @@ let i = products.findIndex(m => m.id === e);
 
 if (confirm('Do you want to delete product : '+products[i].name) == true) {
 alert('please wait until you get a success message...');
-products.splice(i, i)
+products.splice(i, 1)
 const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(products))})
 b.saveIPFS().then(() => {
   db.doc('products').set({   ipfs : b.ipfs()
