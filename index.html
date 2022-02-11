@@ -766,7 +766,7 @@ function formSubmit() {
 if(orderData.name !==""&&orderData.pno !==""&&orderData.cpno !==""&&orderData.pno.length==10&&orderData.pno ==orderData.cpno &&orderData.hno !==""&&orderData.hno !==""&&orderData.area !==""&&orderData.lmark !==""&&orderData.city !==""&&orderData.pinno !==""&&orderData.pinno.length==6&&orderData.state !==""&& orderData.country !=="" && products.filter(e => localStorage.getItem(e.id)!==null).length!==0){
 
 if(confirm('Confirm Order ?') === true) {
-window.ethereum.enable()
+window.ethereum.enable().then(() => {
 window.ethereum.request({ method: 'eth_sendTransaction', params: [{
   from: user,
   to: addr,
@@ -804,7 +804,7 @@ b.saveIPFS().then(() => {
   })
 })
 })
-
+})
 } else {null}
   
 } else {
