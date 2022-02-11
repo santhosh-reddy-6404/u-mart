@@ -253,7 +253,7 @@ const ordersHash = [{"hash": hash}]
 const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(ordersHash))})
 b.saveIPFS().then(() => {
   db.doc('orders').set({ ipfs : b.ipfs() })
-  setNone(Date.now())
+  setOrders(orders)
   alert('order confirmed & completed')
 })
 })
@@ -265,6 +265,7 @@ function cancelOrder(e) {
 let i = orders.findIndex(m => m.id === e);
 if(orders[i].status == "false"||orders[i].status == "shipped") {
 if(confirm('Confirm that you want to cancel the order ?')===true) {
+window.ethereum.enable()
 window.ethereum.request({ method: 'eth_sendTransaction', params: [{
   from: user,
   to: addr,
@@ -281,7 +282,7 @@ const ordersHash = [{"hash": hash}]
 const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(ordersHash))})
 b.saveIPFS().then(() => {
   db.doc('orders').set({ ipfs : b.ipfs() })
-  setNone(Date.now())
+  setOrders(orders)
   alert('order cancelled!')
 })
 })
@@ -765,6 +766,7 @@ function formSubmit() {
 if(orderData.name !==""&&orderData.pno !==""&&orderData.cpno !==""&&orderData.pno.length==10&&orderData.pno ==orderData.cpno &&orderData.hno !==""&&orderData.hno !==""&&orderData.area !==""&&orderData.lmark !==""&&orderData.city !==""&&orderData.pinno !==""&&orderData.pinno.length==6&&orderData.state !==""&& orderData.country !=="" && products.filter(e => localStorage.getItem(e.id)!==null).length!==0){
 
 if(confirm('Confirm Order ?') === true) {
+window.ethereum.enable()
 window.ethereum.request({ method: 'eth_sendTransaction', params: [{
   from: user,
   to: addr,
