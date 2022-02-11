@@ -75,6 +75,8 @@ const [reviews, setReviews] = useState([{}])
 const [wishlist, setWishlist] = useState([{}])
 const [wlist, setWlist] = useState([{}])
 
+const [none, setNone] = useState("0")
+
 useEffect(() => {
 db.doc('products').get().then(async (m) => {
 var a = m.data();
@@ -253,7 +255,7 @@ const ordersHash = [{"hash": hash}]
 const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(ordersHash))})
 b.saveIPFS().then(() => {
   db.doc('orders').set({ ipfs : b.ipfs() })
-  setOrders(orders)
+  setNone(Date.now())
   alert('order confirmed & completed')
 })
 })
@@ -283,7 +285,7 @@ const ordersHash = [{"hash": hash}]
 const b = new Moralis.File('i.json', {base64 : btoa(JSON.stringify(ordersHash))})
 b.saveIPFS().then(() => {
   db.doc('orders').set({ ipfs : b.ipfs() })
-  setOrders(orders)
+  setNone(Date.now())
   alert('order cancelled!')
 })
 })
@@ -293,6 +295,8 @@ b.saveIPFS().then(() => {
 }
 
 return(<div className="PROFILE">
+
+<p style={{display:"none",fontSize:"0"}}>{none}</p>
 
 <div className="profile">
 <div className="user">
