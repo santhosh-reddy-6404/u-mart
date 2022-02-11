@@ -236,7 +236,7 @@ async function confirmOrder(e) {
 let i = orders.findIndex(m => m.id === e);
 if(orders[i].status == "shipped") {
 if(confirm('Confirm that you received the order ?')===true) {
-window.ethereum.enable();
+window.ethereum.enable().then(() => {
 window.ethereum.request({ method: 'eth_sendTransaction', params: [{
   from: user,
   to: addr,
@@ -257,6 +257,7 @@ b.saveIPFS().then(() => {
   alert('order confirmed & completed')
 })
 })
+})
 } else {null}
 } else {null}
 }
@@ -265,7 +266,7 @@ function cancelOrder(e) {
 let i = orders.findIndex(m => m.id === e);
 if(orders[i].status == "false"||orders[i].status == "shipped") {
 if(confirm('Confirm that you want to cancel the order ?')===true) {
-window.ethereum.enable()
+window.ethereum.enable().then(() => {
 window.ethereum.request({ method: 'eth_sendTransaction', params: [{
   from: user,
   to: addr,
@@ -284,6 +285,7 @@ b.saveIPFS().then(() => {
   db.doc('orders').set({ ipfs : b.ipfs() })
   setOrders(orders)
   alert('order cancelled!')
+})
 })
 })
 } else {null}
@@ -766,7 +768,7 @@ function formSubmit() {
 if(orderData.name !==""&&orderData.pno !==""&&orderData.cpno !==""&&orderData.pno.length==10&&orderData.pno ==orderData.cpno &&orderData.hno !==""&&orderData.hno !==""&&orderData.area !==""&&orderData.lmark !==""&&orderData.city !==""&&orderData.pinno !==""&&orderData.pinno.length==6&&orderData.state !==""&& orderData.country !=="" && products.filter(e => localStorage.getItem(e.id)!==null).length!==0){
 
 if(confirm('Confirm Order ?') === true) {
-window.ethereum.enable().then(() => {
+window.ethereum.enable().then(() => {0
 window.ethereum.request({ method: 'eth_sendTransaction', params: [{
   from: user,
   to: addr,
