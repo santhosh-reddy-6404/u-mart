@@ -275,7 +275,7 @@ window.ethereum.request({ method: 'eth_sendTransaction', params: [{
   data: contract.methods.cancel(web3.utils.toWei("0.1","ether")).encodeABI()
 }] }).then(() => {
 alert('please wait until you get a success message...');
-orders[i].status="true";
+orders[i].status="cancelled";
 const hash = CryptoJS.AES.encrypt(JSON.stringify(orders), key, {
   iv: iv,
   mode: CryptoJS.mode.CBC,
