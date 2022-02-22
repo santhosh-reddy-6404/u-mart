@@ -74,6 +74,7 @@ const [orders, setOrders] = useState([{}])
 const [reviews, setReviews] = useState([{}])
 const [wishlist, setWishlist] = useState([{}])
 const [wlist, setWlist] = useState([{}])
+const [eth, setEth] = useState("")
 
 const [none, setNone] = useState("0")
 
@@ -82,8 +83,13 @@ db.doc('products').get().then(async (m) => {
 var a = m.data();
 const url = a.ipfs
 const response = await fetch(url);
-return response.json().then((k) => {
+return response.json().then(async(k) => {
   setProducts(k.filter(e => e.id !== ""))
+  const url = "https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=BTC,USD,EUR&api_key=4840089d874b59a6452033d2a75aa08929c3c7af03f382ad460dd1d854d6d266"
+  const response = await fetch(url);
+  return response.json().then((e) => {
+  setEth(e.USD)
+  })
 })
 })
 db.doc('admin').get().then(async (m) => {
@@ -791,15 +797,6 @@ localStorage.setItem("orderData", hash)
 
 function formSubmit() {
 
-const [eth, setEth] = useState("")
-async function usdToEth(usd) {
-const url = "https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=BTC,USD,EUR&api_key=4840089d874b59a6452033d2a75aa08929c3c7af03f382ad460dd1d854d6d266"
-const response = await fetch(url);
-return response.json().then((k) => {
-  setEth(total/k.USD)
-})
-} usdToEth()
-
 if(orderData.name !==""&&orderData.pno !==""&&orderData.cpno !==""&&orderData.pno.length==10&&orderData.pno ==orderData.cpno &&orderData.hno !==""&&orderData.hno !==""&&orderData.area !==""&&orderData.lmark !==""&&orderData.city !==""&&orderData.pinno !==""&&orderData.pinno.length==6&&orderData.state !==""&& orderData.country !=="" && products.filter(e => localStorage.getItem(e.id)!==null).length!==0){
 
 var msg = "Confirm Order? If confirmed, please conplete the transaction of "+eth+"ETH in your wallet..."
@@ -809,7 +806,7 @@ window.ethereum.enable().then(() => {
 window.ethereum.request({ method: 'eth_sendTransaction', params: [{
   from: user,
   to: addr,
-  value: parseInt(web3.utils.toWei(eth,"ether")).toString(16),
+  value: parseInt(web3.utils.toWei(total/eth,"ether")).toString(16),
   data: contract.methods.pay().encodeABI()
 }] }).then(() => {
   alert('please wait until you get a success message...');
