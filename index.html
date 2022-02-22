@@ -244,13 +244,15 @@ async function confirmOrder(e) {
 
 let i = orders.findIndex(m => m.id === e);
 
+var sum = orders[i].total/eth
+
 if(orders[i].status == "shipped") {
 if(confirm('Confirm that you received the order ?')===true) {
 window.ethereum.enable().then(() => {
 window.ethereum.request({ method: 'eth_sendTransaction', params: [{
   from: user,
   to: addr,
-  data: contract.methods.confirm(web3.utils.toWei(orders[i].total/eth.toString(),"ether")).encodeABI()
+  data: contract.methods.confirm(web3.utils.toWei(sum.toString(),"ether")).encodeABI()
 }] }).then(() => {
 alert('please wait until you get a success message...');
 orders[i].status="true";
@@ -276,13 +278,15 @@ async function cancelOrder(e) {
 
 let i = orders.findIndex(m => m.id === e);
 
+var sum = orders[i].total/eth
+
 if(orders[i].status == "false"||orders[i].status == "shipped") {
 if(confirm('Confirm that you want to cancel the order ?')===true) {
 window.ethereum.enable().then(() => {
 window.ethereum.request({ method: 'eth_sendTransaction', params: [{
   from: user,
   to: addr,
-  data: contract.methods.cancel(web3.utils.toWei(orders[i].total/eth.toString(),"ether")).encodeABI()
+  data: contract.methods.cancel(web3.utils.toWei(sum.toString(),"ether")).encodeABI()
 }] }).then(() => {
 alert('please wait until you get a success message...');
 orders[i].status="cancelled";
