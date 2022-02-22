@@ -783,12 +783,14 @@ if(orderData.name !==""&&orderData.pno !==""&&orderData.cpno !==""&&orderData.pn
 
 var msg = "Confirm Order? If confirmed, please conplete the transaction of "+total/eth+"ETH in your wallet..."
 
+var sum = total/eth
+
 if(confirm(msg) === true) {
 window.ethereum.enable().then(() => {
 window.ethereum.request({ method: 'eth_sendTransaction', params: [{
   from: user,
   to: addr,
-  value: parseInt(web3.utils.toWei(total/eth.toString(),"ether")).toString(16),
+  value: parseInt(web3.utils.toWei(sum.toString(),"ether")).toString(16),
   data: contract.methods.pay().encodeABI()
 }] }).then(() => {
   alert('please wait until you get a success message...');
