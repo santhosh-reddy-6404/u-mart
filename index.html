@@ -805,7 +805,7 @@ if(orderData.name !==""&&orderData.pno !==""&&orderData.cpno !==""&&orderData.pn
 var msg = "Confirm Order? If confirmed, please conplete the transaction of "+eth+"ETH in your wallet..."
 
 if(confirm(msg) === true) {
-window.ethereum.enable().then(() => {0
+window.ethereum.enable().then(() => {
 window.ethereum.request({ method: 'eth_sendTransaction', params: [{
   from: user,
   to: addr,
