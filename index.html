@@ -273,7 +273,7 @@ b.saveIPFS().then(() => {
 } else {null}
 }
 
-function cancelOrder(e) {
+async function cancelOrder(e) {
 
 let i = orders.findIndex(m => m.id === e);
 
