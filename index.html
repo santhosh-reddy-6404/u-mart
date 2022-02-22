@@ -235,14 +235,23 @@ const [balance, setBal] = useState('0')
 web3.eth.getBalance(user).then(function (balance) { setBal((web3.utils.fromWei(balance, 'ether').toString()).substr(0,6)); })
 
 async function confirmOrder(e) {
+
 let i = orders.findIndex(m => m.id === e);
+
+let eth;
+const url = "https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=BTC,USD,EUR"
+const response = await fetch(url);
+return response.json().then((k) => {
+  eth = orders[i].total/k.USD
+})
+
 if(orders[i].status == "shipped") {
 if(confirm('Confirm that you received the order ?')===true) {
 window.ethereum.enable().then(() => {
 window.ethereum.request({ method: 'eth_sendTransaction', params: [{
   from: user,
   to: addr,
-  data: contract.methods.confirm(web3.utils.toWei("0.1","ether")).encodeABI()
+  data: contract.methods.confirm(web3.utils.toWei(eth,"ether")).encodeABI()
 }] }).then(() => {
 alert('please wait until you get a success message...');
 orders[i].status="true";
@@ -265,14 +274,23 @@ b.saveIPFS().then(() => {
 }
 
 function cancelOrder(e) {
+
 let i = orders.findIndex(m => m.id === e);
+
+let eth;
+const url = "https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=BTC,USD,EUR"
+const response = await fetch(url);
+return response.json().then((k) => {
+  eth = orders[i].total/k.USD
+})
+
 if(orders[i].status == "false"||orders[i].status == "shipped") {
 if(confirm('Confirm that you want to cancel the order ?')===true) {
 window.ethereum.enable().then(() => {
 window.ethereum.request({ method: 'eth_sendTransaction', params: [{
   from: user,
   to: addr,
-  data: contract.methods.cancel(web3.utils.toWei("0.1","ether")).encodeABI()
+  data: contract.methods.cancel(web3.utils.toWei(eth,"ether")).encodeABI()
 }] }).then(() => {
 alert('please wait until you get a success message...');
 orders[i].status="cancelled";
@@ -767,16 +785,23 @@ localStorage.setItem("orderData", hash)
 
 }
 
-function formSubmit() {
+async function formSubmit() {
+
+let eth;
+const url = "https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=BTC,USD,EUR"
+const response = await fetch(url);
+return response.json().then((k) => {
+  eth = total/k.USD
+})
 
 if(orderData.name !==""&&orderData.pno !==""&&orderData.cpno !==""&&orderData.pno.length==10&&orderData.pno ==orderData.cpno &&orderData.hno !==""&&orderData.hno !==""&&orderData.area !==""&&orderData.lmark !==""&&orderData.city !==""&&orderData.pinno !==""&&orderData.pinno.length==6&&orderData.state !==""&& orderData.country !=="" && products.filter(e => localStorage.getItem(e.id)!==null).length!==0){
 
-if(confirm('Confirm Order ?') === true) {
+if(confirm('Confirm Order ? If confirmed please complete the transaction of '+eth+' in your wallet..') === true) {
 window.ethereum.enable().then(() => {0
 window.ethereum.request({ method: 'eth_sendTransaction', params: [{
   from: user,
   to: addr,
-  value: parseInt(web3.utils.toWei("0.1","ether")).toString(16),
+  value: parseInt(web3.utils.toWei(eth,"ether")).toString(16),
   data: contract.methods.pay().encodeABI()
 }] }).then(() => {
   alert('please wait until you get a success message...');
