@@ -250,7 +250,7 @@ window.ethereum.enable().then(() => {
 window.ethereum.request({ method: 'eth_sendTransaction', params: [{
   from: user,
   to: addr,
-  data: contract.methods.confirm(web3.utils.toWei(orders[i].total/eth,"ether")).encodeABI()
+  data: contract.methods.confirm(web3.utils.toWei(orders[i].total/eth.toString(),"ether")).encodeABI()
 }] }).then(() => {
 alert('please wait until you get a success message...');
 orders[i].status="true";
@@ -282,7 +282,7 @@ window.ethereum.enable().then(() => {
 window.ethereum.request({ method: 'eth_sendTransaction', params: [{
   from: user,
   to: addr,
-  data: contract.methods.cancel(web3.utils.toWei(orders[i].total/eth,"ether")).encodeABI()
+  data: contract.methods.cancel(web3.utils.toWei(orders[i].total/eth.toString(),"ether")).encodeABI()
 }] }).then(() => {
 alert('please wait until you get a success message...');
 orders[i].status="cancelled";
@@ -788,7 +788,7 @@ window.ethereum.enable().then(() => {
 window.ethereum.request({ method: 'eth_sendTransaction', params: [{
   from: user,
   to: addr,
-  value: parseInt(web3.utils.toWei(total/eth,"ether")).toString(16),
+  value: parseInt(web3.utils.toWei(total/eth.toString(),"ether")).toString(16),
   data: contract.methods.pay().encodeABI()
 }] }).then(() => {
   alert('please wait until you get a success message...');
