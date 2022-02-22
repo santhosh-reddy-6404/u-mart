@@ -158,7 +158,7 @@ return (<div>
   </div>
   <div className="set">
     <b>Unfulfilled Orders</b>
-    <p>{orders.filter(e => e.status!=="true").length - 1}</p>
+    <p>{orders.filter(e => e.status!=="true"&&e.status!=="cancelled").length - 1}</p>
   </div>
   </div>
 </div>
