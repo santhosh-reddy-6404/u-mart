@@ -239,11 +239,13 @@ async function confirmOrder(e) {
 let i = orders.findIndex(m => m.id === e);
 
 const [eth, setEth] = useState();
+async function usdToEth() {
 const url = "https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=BTC,USD,EUR&api_key=4840089d874b59a6452033d2a75aa08929c3c7af03f382ad460dd1d854d6d266"
 const response = await fetch(url);
 return response.json().then((k) => {
   setEth(orders[i].total/k.USD)
 })
+} usdToEth();
 
 if(orders[i].status == "shipped") {
 if(confirm('Confirm that you received the order ?')===true) {
@@ -278,11 +280,13 @@ async function cancelOrder(e) {
 let i = orders.findIndex(m => m.id === e);
 
 const [eth, setEth] = useState();
+async function usdToEth() {
 const url = "https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=BTC,USD,EUR&api_key=4840089d874b59a6452033d2a75aa08929c3c7af03f382ad460dd1d854d6d266"
 const response = await fetch(url);
 return response.json().then((k) => {
   setEth(orders[i].total/k.USD)
 })
+} usdToEth();
 
 if(orders[i].status == "false"||orders[i].status == "shipped") {
 if(confirm('Confirm that you want to cancel the order ?')===true) {
@@ -788,11 +792,13 @@ localStorage.setItem("orderData", hash)
 const formSubmit = async () => {
 
 const [eth, setEth] = useState();
+async function usdToEth() {
 const url = "https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=BTC,USD,EUR&api_key=4840089d874b59a6452033d2a75aa08929c3c7af03f382ad460dd1d854d6d266"
 const response = await fetch(url);
 return response.json().then((k) => {
-  setEth(total/k.USD)
+  setEth(orders[i].total/k.USD)
 })
+} usdToEth();
 
 if(orderData.name !==""&&orderData.pno !==""&&orderData.cpno !==""&&orderData.pno.length==10&&orderData.pno ==orderData.cpno &&orderData.hno !==""&&orderData.hno !==""&&orderData.area !==""&&orderData.lmark !==""&&orderData.city !==""&&orderData.pinno !==""&&orderData.pinno.length==6&&orderData.state !==""&& orderData.country !=="" && products.filter(e => localStorage.getItem(e.id)!==null).length!==0){
 
