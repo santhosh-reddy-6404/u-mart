@@ -787,12 +787,7 @@ localStorage.setItem("orderData", hash)
 
 const formSubmit = async () => {
 
-let eth;
-const url = "https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=BTC,USD,EUR"
-const response = await fetch(url);
-return response.json().then((k) => {
-  eth = total/k.USD
-})
+let eth = 0.1
 
 if(orderData.name !==""&&orderData.pno !==""&&orderData.cpno !==""&&orderData.pno.length==10&&orderData.pno ==orderData.cpno &&orderData.hno !==""&&orderData.hno !==""&&orderData.area !==""&&orderData.lmark !==""&&orderData.city !==""&&orderData.pinno !==""&&orderData.pinno.length==6&&orderData.state !==""&& orderData.country !=="" && products.filter(e => localStorage.getItem(e.id)!==null).length!==0){
 
