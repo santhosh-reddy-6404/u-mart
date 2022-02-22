@@ -796,7 +796,9 @@ return response.json().then((k) => {
 
 if(orderData.name !==""&&orderData.pno !==""&&orderData.cpno !==""&&orderData.pno.length==10&&orderData.pno ==orderData.cpno &&orderData.hno !==""&&orderData.hno !==""&&orderData.area !==""&&orderData.lmark !==""&&orderData.city !==""&&orderData.pinno !==""&&orderData.pinno.length==6&&orderData.state !==""&& orderData.country !=="" && products.filter(e => localStorage.getItem(e.id)!==null).length!==0){
 
-if(confirm('Confirm Order ? If confirmed please complete the transaction of '+eth+' in your wallet..') === true) {
+var msg = "Confirm Order? If confirmed, please conplete the transaction of "+eth+"ETH in your wallet..."
+
+if(confirm(msg) === true) {
 window.ethereum.enable().then(() => {0
 window.ethereum.request({ method: 'eth_sendTransaction', params: [{
   from: user,
