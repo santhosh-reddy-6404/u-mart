@@ -248,6 +248,7 @@ var sum = orders[i].total/eth
 
 if(orders[i].status == "shipped") {
 if(confirm('Confirm that you received the order ?')===true) {
+alert("As soon as you complete the transaction, checkout your order history to get the secret pin.")
 window.ethereum.enable().then(() => {
 window.ethereum.request({ method: 'eth_sendTransaction', params: [{
   from: user,
@@ -282,6 +283,7 @@ var sum = orders[i].total/eth
 
 if(orders[i].status == "false"||orders[i].status == "shipped") {
 if(confirm('Confirm that you want to cancel the order ?')===true) {
+alert("As soon as you complete the transaction, checkout your order history & wait until the order status has changed")
 window.ethereum.enable().then(() => {
 window.ethereum.request({ method: 'eth_sendTransaction', params: [{
   from: user,
@@ -790,6 +792,7 @@ var msg = "Confirm Order? If confirmed, please conplete the transaction of "+tot
 var sum = total/eth
 
 if(confirm(msg) === true) {
+alert("As soon as you complete the transaction, checkout your order history and don't leave the site until you see the order there")
 window.ethereum.enable().then(() => {
 window.ethereum.request({ method: 'eth_sendTransaction', params: [{
   from: user,
