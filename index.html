@@ -565,6 +565,7 @@ function profLog() {
 
 function Review() {
 
+if( JSON.stringify(orders.filter(e => e.ethAddress==user)).includes(products[me].name) ) {
 if(document.getElementById('rname').value!==""&&document.getElementById('rreview').value!=="") {
 
 alert('Please wait until you get a success message. You can continue your shopping...');
@@ -592,6 +593,7 @@ b.saveIPFS().then(() => {
 })
 
 } else { alert('Please give your name and review !') }
+} else { alert("You didn't purchased this product to write a review") }
 }
 
 const [wish, setWish] = useState(false)
