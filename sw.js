@@ -1,4 +1,4 @@
-//Service Worker...
+//Service Worker..
 
 self.addEventListener('install', function(event) {
   event.waitUntil(
