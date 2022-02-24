@@ -812,7 +812,7 @@ window.ethereum.request({ method: 'eth_sendTransaction', params: [{
   payment : 'ethereum',
   total : total,
   status : 'false',
-  secret: Date.now().toString().substr(-6)
+  secret: (Math.random()*1000000).toString().substr(-6)
 })
 
 const hash = CryptoJS.AES.encrypt(JSON.stringify(orders), key, {
