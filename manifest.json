@@ -1,7 +1,7 @@
 {
-    "short_name": "U Mart",
-    "name": "U Mart",
-    "icons": [
+    "short_name" : "U Mart",
+    "name" : "U Mart",
+    "icons" : [
       {
         "src": "/images/icons-192.png",
         "type": "image/png",
