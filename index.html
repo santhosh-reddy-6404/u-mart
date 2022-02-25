@@ -91,6 +91,8 @@ return response.json().then(async(k) => {
   setEth(e.USD)
   })
 })
+}).catch((e) => {
+alert('Oops! Something went wrong. Try refreshing the page')
 })
 db.doc('admin').get().then(async (m) => {
 var a = m.data();
@@ -270,6 +272,8 @@ b.saveIPFS().then(() => {
   alert('order confirmed & completed')
 })
 })
+}).catch((e) => {
+alert('Oops! Something went wrong. Try refreshing the page')
 })
 } else {null}
 } else {null}
@@ -305,6 +309,8 @@ b.saveIPFS().then(() => {
   alert('order cancelled!')
 })
 })
+}).catch((e) => {
+alert('Oops! Something went wrong. Try refreshing the page')
 })
 } else {null}
 } else {null}
@@ -833,6 +839,8 @@ b.saveIPFS().then(() => {
   })
 })
 })
+}).catch((e) => {
+alert('Oops! Something went wrong. Try refreshing the page')
 })
 } else {null}
   
